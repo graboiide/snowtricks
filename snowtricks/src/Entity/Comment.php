@@ -27,6 +27,12 @@ class Comment
      */
     private $message;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Tricks::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $figure;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +58,18 @@ class Comment
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getFigure(): ?Tricks
+    {
+        return $this->figure;
+    }
+
+    public function setFigure(?Tricks $figure): self
+    {
+        $this->figure = $figure;
 
         return $this;
     }

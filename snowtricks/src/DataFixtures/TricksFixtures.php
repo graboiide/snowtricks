@@ -41,7 +41,7 @@ class TricksFixtures extends Fixture
             $users[] = $user;
         }
         //tricks
-        for ($i =0 ; $i<12 ; $i++){
+        for ($i =0 ; $i<60 ; $i++){
             $figure = new Tricks();
             $startDate = mt_rand(-5,-1);
             $figure

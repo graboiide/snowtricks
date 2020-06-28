@@ -6,6 +6,7 @@ use App\Repository\TricksRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
@@ -16,47 +17,56 @@ class Tricks
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("tricks:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("tricks:read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("tricks:read")
      */
     private $description;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("tricks:read")
      */
     private $dateAdd;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("tricks:read")
      */
     private $dateModif;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("tricks:read")
      */
     private $cover;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("tricks:read")
      */
     private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=Media::class, mappedBy="figure", orphanRemoval=true)
+     * @Groups("tricks:read")
      */
     private $medias;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Tricks")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("tricks:read")
      */
     private $user;
 
@@ -68,6 +78,7 @@ class Tricks
     /**
      * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $family;
 

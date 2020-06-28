@@ -1,0 +1,11 @@
+
+{% for figure in tricks %}
+    <div class="col-lg-3 col-md-12  mt-lg-4 mt-md-5">
+        <div class="card">
+            <img class="card-img-top" src="{{ figure.cover }}" alt="Card image cap">
+            <div class="card-body ">
+                <h5 class="card-title">{{figure.name}}</h5>
+            </div>
+        </div>
+    </div>
+{% endfor %}

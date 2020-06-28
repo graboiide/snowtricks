@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des figures de snowboard{% endblock %}
+
+{% block body %}
+
+    <div class="container-lg mt-5" id="tricks">
+        <div class="row tricks-area">
+            {% include 'home/test.html.twig' with {'tricks' : tricks}%}
+
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <div class="col-lg-4 col-md-12">
+                    <a href="#" id="load-tricks">
+                        <div class="load-more h5 my-5 text-center p-3 d-flex justify-content-center align-items-center">
+                            <div><i class="fas fa-spinner fa-2x mr-3">  </i></div>  <div>Charger les figures suivantes</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="to-tricks-top">
+            <a href="#tricks" class="smooth-scroll">
+                <div class="round-top">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        jQuery(function(){
+            let page = 1;
+            let nbTricks = {{ nbTricks }};
+            let nbLoad = {{ nbLoad }};
+            $("#load-tricks").click(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url : '/load/'+page,
+                    type : 'GET',
+                    dataType : 'html',
+                    success : function(data, statut){
+
+                        console.log(nbTricks);
+                        page++;
+                        if(nbTricks > 0){
+                            $('.tricks-area').append(data);
+                            nbTricks -= nbLoad;
+                        }
+                        if(nbTricks <= 0)
+                            $('#load-tricks').hide();
+
+                    },
+
+                    error : function(resultat, statut, erreur){
+                        console.log('error');
+                    }
+
+                });
+
+            });
+        });
+    </script>
+{% endblock %}
+
+

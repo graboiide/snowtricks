@@ -65,6 +65,12 @@ class Tricks
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="tricks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $family;
+
     public function __construct()
     {
         $this->medias = new ArrayCollection();
@@ -218,6 +224,18 @@ class Tricks
                 $comment->setFigure(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFamily(): ?Group
+    {
+        return $this->family;
+    }
+
+    public function setFamily(?Group $family): self
+    {
+        $this->family = $family;
 
         return $this;
     }

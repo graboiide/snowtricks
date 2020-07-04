@@ -1,0 +1,275 @@
+.round-left {
+    position: relative;
+    border: 3px solid #ff864f;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+
+.round-left span {
+    z-index: 999;
+    height: 3px;
+    margin:1px;
+    width: 16px;
+    background: #ff864f;
+    transition: 0.4s ease;
+}
+
+
+.round-left span:first-child {
+    display: block;
+    position: absolute;
+    transform: rotate(45deg);
+    left: 25%;
+    bottom: 35%;
+}
+
+.round-left span:nth-child(2) {
+    display: block;
+    position: absolute;
+    transform: rotate(-135deg);
+    left: 45%;
+    bottom: 35%;
+}
+
+.round-left span:nth-child(3) {
+    display: block;
+    position: absolute;
+    transform: rotate(135deg);
+    left: 25%;
+    bottom: 54%;
+}
+
+.round-left span:nth-child(4) {
+    display: block;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 45%;
+    bottom: 54%;
+}
+
+.round-left:hover span:nth-child(1) {
+    transform: rotate(-135deg);
+}
+
+.round-left:hover span:nth-child(2) {
+    transform: rotate(225deg);
+}
+
+.round-left:hover span:nth-child(3) {
+    transform: rotate(-225deg);
+}
+
+.round-left:hover span:nth-child(4) {
+    transform: rotate(-225deg);
+}
+
+.round-right {
+    position: relative;
+    border: 3px solid #ff864f;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+
+.round-right span {
+    z-index: 999;
+    height: 3px;
+    margin:1px;
+    width: 16px;
+    background: #ff864f;
+    transition: 0.4s ease;
+}
+
+
+.round-right span:first-child {
+    display: block;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 25%;
+    bottom: 35%;
+}
+
+.round-right span:nth-child(2) {
+    display: block;
+    position: absolute;
+    transform: rotate(135deg);
+    left: 45%;
+    bottom: 35%;
+}
+
+.round-right span:nth-child(3) {
+    display: block;
+    position: absolute;
+    transform: rotate(-135deg);
+    left: 25%;
+    bottom: 54%;
+}
+
+.round-right span:nth-child(4) {
+    display: block;
+    position: absolute;
+    transform: rotate(45deg);
+    left: 45%;
+    bottom: 54%;
+}
+
+.round-right:hover span:nth-child(1) {
+    transform: rotate(135deg);
+}
+
+.round-right:hover span:nth-child(2) {
+    transform: rotate(-225deg);
+}
+
+.round-right:hover span:nth-child(3) {
+    transform: rotate(225deg);
+}
+
+.round-right:hover span:nth-child(4) {
+    transform: rotate(225deg);
+}
+
+
+.round-top {
+    position: relative;
+    border: 3px solid #ff864f;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+
+.round-top span {
+    z-index: 999;
+    height: 3px;
+    margin:1px;
+    width: 16px;
+    background: #ff864f;
+    transition: 0.4s ease;
+}
+
+.round-top span:first-child {
+    display: block;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 25%;
+    bottom: 35%;
+}
+
+.round-top span:nth-child(2) {
+    display: block;
+    position: absolute;
+    transform: rotate(45deg);
+    left: 45%;
+    bottom: 35%;
+}
+
+.round-top span:nth-child(3) {
+    display: block;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 25%;
+    bottom: 54%;
+}
+
+.round-top span:nth-child(4) {
+    display: block;
+    position: absolute;
+    transform: rotate(45deg);
+    left: 45%;
+    bottom: 54%;
+}
+
+.round-top:hover span:nth-child(1) {
+    transform: rotate(135deg);
+}
+
+.round-top:hover span:nth-child(2) {
+    transform: rotate(-135deg);
+}
+
+.round-top:hover span:nth-child(3) {
+    transform: rotate(-225deg);
+}
+
+.round-top:hover span:nth-child(4) {
+    transform: rotate(225deg);
+}
+
+/* To Tricks */
+.to-tricks{
+    position: absolute;
+    bottom: 60px;
+    right: 60px;
+}
+
+.round {
+    position: relative;
+    border: 3px solid #ff864f;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+
+.round span {
+    z-index: 999;
+    height: 3px;
+    margin:1px;
+    width: 16px;
+    background: #ff864f;
+    transition: 0.4s ease;
+}
+
+
+.round span:first-child {
+    display: block;
+    position: absolute;
+    transform: rotate(45deg);
+    left: 25%;
+    bottom: 35%;
+}
+
+.round span:nth-child(2) {
+    display: block;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 45%;
+    bottom: 35%;
+}
+
+.round span:nth-child(3) {
+    display: block;
+    position: absolute;
+    transform: rotate(45deg);
+    left: 25%;
+    bottom: 54%;
+}
+
+.round span:nth-child(4) {
+    display: block;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 45%;
+    bottom: 54%;
+}
+
+.round:hover span:nth-child(1) {
+    transform: rotate(-135deg);
+}
+
+.round:hover span:nth-child(2) {
+    transform: rotate(135deg);
+}
+
+.round:hover span:nth-child(3) {
+    transform: rotate(225deg);
+}
+
+.round:hover span:nth-child(4) {
+    transform: rotate(-225deg);
+}
+.to-tricks-top{
+    position: fixed;
+    bottom: 60px;
+    right: 60px;
+}

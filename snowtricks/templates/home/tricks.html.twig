@@ -1,0 +1,19 @@
+
+{% for figure in tricks %}
+    {% if figure.images is not empty %}
+        {% set cover = figure.images[0].url %}
+    {% else %}
+        {% set cover = '/img/not-found.png' %}
+    {% endif %}
+    <div class="col-lg-3 col-md-12  mt-lg-4 mt-md-5">
+        <div class="card">
+            <a href="{{ path('show_tricks',{'slug':figure.slug}) }}">
+
+                <img class="card-img-top" src="{{ cover }}" alt="Card image cap">
+            </a>
+            <div class="card-body ">
+                <h5 class="card-title">{{figure.name}}</h5>
+            </div>
+        </div>
+    </div>
+{% endfor %}

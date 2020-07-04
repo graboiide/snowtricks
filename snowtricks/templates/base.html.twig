@@ -11,6 +11,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="/css/snowtricks.css">
+        <link rel="stylesheet" href="/css/btn.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
@@ -20,12 +21,16 @@
          <div class="container-fluid" id="home">
                 <div class="row">
                     <div class="img-header">
-                        <nav class="navbar navbar-expand-sm navbar-dark sticky-top my-nav" >
+                        <nav class="navbar navbar-expand-sm navbar-dark fixed-top my-nav" >
                             <!-- Brand -->
                             <a class="navbar-brand" href="#"><img src="/img/logo.png" alt=""></a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
 
 
                             <!-- Links -->
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Me connecter</a>
@@ -37,9 +42,11 @@
                                     <a class="nav-link" href="#">Mon profil</a>
                                 </li>
 
+
                                 <!-- Dropdown -->
 
                             </ul>
+                            </div>
                         </nav>
                         <div class="to-tricks">
                             <a href="#tricks" class="smooth-scroll">
@@ -64,6 +71,7 @@
     </header>
         {% block body %}{% endblock %}
     <script>
+        $(".to-tricks-top").hide();
         $(window).scroll(function() {
             var scroll = $(window).scrollTop();
 

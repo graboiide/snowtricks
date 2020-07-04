@@ -251,4 +251,37 @@ class Tricks
         return $this;
     }
 
+    /**
+     * Retourne toutes les images
+     * @return array
+     */
+    public function getImages()
+    {
+        $images = [];
+        /**
+         * @var Media $media
+         */
+        foreach ($this->medias as $media){
+            if($media->getType() === 0)
+                $images[]=$media;
+        }
+        return $images;
+    }
+    /**
+     * Retourne toutes les images
+     * @return array
+     */
+    public function getmovies()
+    {
+        $movies = [];
+        /**
+         * @var Media $media
+         */
+        foreach ($this->medias as $media){
+            if($media->getType() === 1)
+                $movies[]=$media;
+        }
+        return $movies;
+    }
+
 }

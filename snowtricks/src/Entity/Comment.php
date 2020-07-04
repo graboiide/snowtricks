@@ -18,7 +18,7 @@ class Comment
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
@@ -32,6 +32,12 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      */
     private $figure;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -70,6 +76,18 @@ class Comment
     public function setFigure(?Tricks $figure): self
     {
         $this->figure = $figure;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

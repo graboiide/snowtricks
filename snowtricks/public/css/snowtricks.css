@@ -46,163 +46,93 @@
 .bg-dark{
     background-color: #476f9e!important;
 }
-/* to header*/
 
-.to-tricks-top{
-    position: fixed;
-    bottom: 60px;
-    right: 60px;
-}
-
-.round-top {
-    position: relative;
-    border: 3px solid #ff864f;
-    width: 60px;
-    height: 60px;
+.carousel-indicator span {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-color: #476f9e;
     border-radius: 100%;
 }
+.carousel-indicator .active{
+    width: 20px;
+    height: 20px;
+    background-color: #F5871F;
+}
+.modal{
 
-.round-top span {
-    z-index: 999;
-    height: 3px;
-    margin:1px;
-    width: 16px;
-    background: #ff864f;
-    transition: 0.4s ease;
+    max-height: 97vh;
+    max-width: 100vw;
 }
 
-.round-top span:first-child {
-    display: block;
-    position: absolute;
-    transform: rotate(-45deg);
-    left: 25%;
-    bottom: 35%;
+.modal-dialog{
+    max-width: 100%;
+    height: 100%;
+}
+.modal-content{
+    background-color: transparent;
+    border: 0;
+    height: 100%;
+}
+.modal-body{
+
+    height: 100%;
+}
+.modal-img{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.modal-header{
+    display: none;
 }
 
-.round-top span:nth-child(2) {
-    display: block;
-    position: absolute;
-    transform: rotate(45deg);
-    left: 45%;
-    bottom: 35%;
-}
 
-.round-top span:nth-child(3) {
-    display: block;
-    position: absolute;
-    transform: rotate(-45deg);
-    left: 25%;
-    bottom: 54%;
-}
 
-.round-top span:nth-child(4) {
-    display: block;
-    position: absolute;
-    transform: rotate(45deg);
-    left: 45%;
-    bottom: 54%;
-}
 
-.round-top:hover span:nth-child(1) {
-    transform: rotate(135deg);
-}
-
-.round-top:hover span:nth-child(2) {
-    transform: rotate(-135deg);
-}
-
-.round-top:hover span:nth-child(3) {
-    transform: rotate(-225deg);
-}
-
-.round-top:hover span:nth-child(4) {
-    transform: rotate(225deg);
-}
-
-/* To Tricks */
-.to-tricks{
-    position: absolute;
-    bottom: 60px;
-    right: 60px;
-}
-
-.round {
-    position: relative;
-    border: 3px solid #ff864f;
-    width: 60px;
-    height: 60px;
-    border-radius: 100%;
-}
-
-span {
-    z-index: 999;
-    height: 3px;
-    margin:1px;
-    width: 16px;
-    background: #ff864f;
-    transition: 0.4s ease;
-}
-
-span:first-child {
-    display: block;
-    position: absolute;
-    transform: rotate(45deg);
-    left: 25%;
-    bottom: 35%;
-}
-
-span:nth-child(2) {
-    display: block;
-    position: absolute;
-    transform: rotate(-45deg);
-    left: 45%;
-    bottom: 35%;
-}
-
-span:nth-child(3) {
-    display: block;
-    position: absolute;
-    transform: rotate(45deg);
-    left: 25%;
-    bottom: 54%;
-}
-
-span:nth-child(4) {
-    display: block;
-    position: absolute;
-    transform: rotate(-45deg);
-    left: 45%;
-    bottom: 54%;
-}
-
-.round:hover span:nth-child(1) {
-    transform: rotate(-135deg);
-}
-
-.round:hover span:nth-child(2) {
-    transform: rotate(135deg);
-}
-
-.round:hover span:nth-child(3) {
-    transform: rotate(225deg);
-}
-
-.round:hover span:nth-child(4) {
-    transform: rotate(-225deg);
-}
 /* loader */
 .load-more{
     color: #476f9e;
     font-size: 15px;
-
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.07);
+    border: 1px solid #f1f1f1;
+}
+.comment{
+    border-top-left-radius: 40px;
+    color: #476f9e;
+    font-size: 15px;
     box-shadow: 3px 3px 5px rgba(0,0,0,0.07);
     border: 1px solid #f1f1f1;
 }
 a:hover{
     text-decoration: none;
 }
+.center-div{
+    position: absolute;
+    top: 120px;
+    width: 100%;
+}
+.title-tricks{
+    position: absolute;
+    top: 50%;
+    left:0;
+}
+.title-tricks h1{
+    color: white;
+    text-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+}
+.descr-tricks{
+    font-family: Roboto, serif;
+    font-size: 20px;
+    border-left: 4px solid #476f9e;
+
+}
 @media only screen and (max-device-width: 768px) {
     .img-header{
         background-image: url("/img/snowtricks_mobile.png");
     }
+    .navbar{
+        background-color: #476f9e;
+    }
+
 }

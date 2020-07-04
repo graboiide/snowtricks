@@ -6,15 +6,16 @@
 
     <div class="container-lg mt-5" id="tricks">
         <div class="row tricks-area">
-            {% include 'home/test.html.twig' with {'tricks' : tricks}%}
+            {% include 'home/tricks.html.twig' with {'tricks' : tricks}%}
 
         </div>
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
-                <div class="col-lg-4 col-md-12">
+                <div class="col-lg-5 col-md-12">
                     <a href="#" id="load-tricks">
                         <div class="load-more h5 my-5 text-center p-3 d-flex justify-content-center align-items-center">
-                            <div><i class="fas fa-spinner fa-2x mr-3">  </i></div>  <div>Charger les figures suivantes</div>
+                            <div><img src="/img/loader.gif" alt="" style="width: 30px"></div>
+                            <div class="message-load">Charger les figures suivantes (<span id="nbTricks">{{ nbTricks-nbLoad }}</span> restantes)</div>
                         </div>
                     </a>
                 </div>
@@ -37,10 +38,15 @@
 {% block javascripts %}
     <script>
         jQuery(function(){
+            let loader = $(".load-more img");
+            loader.hide();
             let page = 1;
-            let nbTricks = {{ nbTricks }};
+            let nbTricks = {{ nbTricks }}-12;
             let nbLoad = {{ nbLoad }};
             $("#load-tricks").click(function(e){
+                loader.show();
+                $('.message-load').hide();
+
                 e.preventDefault();
                 $.ajax({
                     url : '/load/'+page,
@@ -53,9 +59,14 @@
                         if(nbTricks > 0){
                             $('.tricks-area').append(data);
                             nbTricks -= nbLoad;
+                            $('#nbTricks').text(nbTricks);
                         }
-                        if(nbTricks <= 0)
+                        if(nbTricks <= 0){
                             $('#load-tricks').hide();
+                        }
+                        loader.hide();
+                        $('.message-load').show();
+
 
                     },
 

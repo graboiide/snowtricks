@@ -30,6 +30,10 @@ class Group
      */
     private $tricks;
 
+    public function __toString()
+    {
+        return $this->name;
+    }
     public function __construct()
     {
         $this->tricks = new ArrayCollection();

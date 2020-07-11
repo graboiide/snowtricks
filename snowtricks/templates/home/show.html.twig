@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
-
+{% import "macros/tricks.html.twig" as myTricks %}
 {% block title %}Liste des figures de snowboard{% endblock %}
-
+{% block stylesheets %} <link rel="stylesheet" href="/css/modal.css"> {% endblock %}
 {% block body %}
 <div class="container-fluid">
     <div class="row center-div" >
@@ -10,16 +10,20 @@
         <div class="col-lg-8 col-md-12" style="background-color: white">
             <div class="row">
                 <div class="col-12 text-center p-0">
+                    <div class="load-more ml-auto p-2  text-center" style="position: absolute;top: 15px;right: 15px">
+                        <a href="{{ path('admin_edit',{'id':figure.id}) }}"><i class="mr-2 fa fa-edit fa-2x" style="color: #476f9e"></i></a>
+                        <a href="{{ path('admin_delete',{'id':figure.id}) }}"><i class="fa fa-trash-alt fa-2x" style="color: #476f9e"></i></a>
+                    </div>
                     <div class="title-tricks col-12 text-center" ><h1 class="h1" style="font-size: 4vw">{{ figure.name }}</h1></div>
-                    <img src="{{ figure.images[0].url }}" alt="" style="width: 100%">
+                    {{ myTricks.cover(figure) }}
                 </div>
             </div>
-            {% include 'home/caroussel.html.twig' with {'figure' : figure}%}
+                {% include 'home/caroussel.html.twig' with {'figure' : figure}%}
 
             <div class="row">
                 <div class="col-12">
                     <div class="descr-tricks p-3 pl-5">
-                        {{ figure.description|raw }}
+                        {{ figure.description }}
                     </div>
                 </div>
             </div>

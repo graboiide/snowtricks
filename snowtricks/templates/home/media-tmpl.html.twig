@@ -1,0 +1,20 @@
+
+<div class="col-lg-2 col-md-4 col-sm-6 px-1 my-carousel-item" data-id="{{ id ?? '__id__' }}" id="tricks_medias_{{ id ?? '__id__' }}_view">
+    {% if media.type is same as (0) %}
+        <img class="card-img-top my-1 removable" src="{{ media.url ?? '__url__' }}" alt="{{ media.caption ?? '__caption__' }}">
+    {% else %}
+        <div class="my-1 embed-responsive embed-responsive-16by9 removable">
+            <iframe class="embed-responsive-item" src="{{ media.url ?? '__url__' }}" allowfullscreen></iframe>
+        </div>
+    {% endif %}
+    {% if edit %}
+    <div class="load-more ml-auto p-2 col-12 text-right" data-target="#tricks_medias_{{ id ?? '__id__' }}">
+        <a href="#" class="edit" data-title="{{ media.caption ?? '__caption__' }}" data-toggle="modal" data-target="#exampleModal">
+            <i class="mr-2 fa fa-edit fa-2x" style="color: #476f9e"></i>
+        </a>
+        <a href="#" class="remove" data-target="#tricks_medias_{{ loop.index0 ?? '__id__' }}">
+            <i class="fa fa-trash-alt fa-2x" style="color: #476f9e"></i>
+        </a>
+    </div>
+    {% endif %}
+</div>

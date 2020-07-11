@@ -41,6 +41,7 @@ class Media
     private $figure;
 
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +94,7 @@ class Media
 
         return $this;
     }
+
 
 
 }

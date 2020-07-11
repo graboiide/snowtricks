@@ -53,7 +53,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}",name="show_tricks")
+     * @Route("/tricks/{slug}",name="show_tricks")
      * @param $slug
      * @param TricksRepository $repo
      * @param CommentRepository $repoComment
@@ -62,10 +62,11 @@ class HomeController extends AbstractController
     public function show($slug,TricksRepository $repo,CommentRepository $repoComment):Response
     {
         $figure = $repo->findOneBy(['slug'=>$slug]);
+        $figureId = $figure->getId();
         return $this->render('home/show.html.twig', [
             'figure'=>$figure,
             'comments'=>$repoComment->findBy(
-                ['figure'=>$figure->getId()],
+                ['figure'=>$figureId],
                 ['id'=>'DESC'],2,0),
             'nbLoad'=>2,
             'nbComments'=>$repoComment->count(['figure'=>$figure->getId()])

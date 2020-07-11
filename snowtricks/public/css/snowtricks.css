@@ -1,3 +1,8 @@
+body{
+    font-family: Roboto, serif;
+}
+
+
 .card-title{
     color: #476f9e;
     padding: 0;
@@ -59,35 +64,20 @@
     height: 20px;
     background-color: #F5871F;
 }
-.modal{
+label{
+    font-family: Roboto, serif;
+    color: #476f9e;
+    font-weight: bold;
+}
+.form-control{
+    border-radius: 0;
 
-    max-height: 97vh;
-    max-width: 100vw;
+    color: #476f9e;
 }
-
-.modal-dialog{
-    max-width: 100%;
-    height: 100%;
+.btn{
+    border-radius: 0;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
 }
-.modal-content{
-    background-color: transparent;
-    border: 0;
-    height: 100%;
-}
-.modal-body{
-
-    height: 100%;
-}
-.modal-img{
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-}
-.modal-header{
-    display: none;
-}
-
-
 
 
 /* loader */
@@ -96,6 +86,7 @@
     font-size: 15px;
     box-shadow: 3px 3px 5px rgba(0,0,0,0.07);
     border: 1px solid #f1f1f1;
+    background-color: white;
 }
 .comment{
     border-top-left-radius: 40px;
@@ -109,7 +100,7 @@ a:hover{
 }
 .center-div{
     position: absolute;
-    top: 120px;
+    top: 80px;
     width: 100%;
 }
 .title-tricks{

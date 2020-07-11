@@ -46,7 +46,7 @@ class Tricks
     private $dateModif;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("tricks:read")
      */
     private $cover;
@@ -146,7 +146,7 @@ class Tricks
         return $this->cover;
     }
 
-    public function setCover(string $cover): self
+    public function setCover(?string $cover): self
     {
         $this->cover = $cover;
 
@@ -176,6 +176,7 @@ class Tricks
     public function addMedia(Media $media): self
     {
         if (!$this->medias->contains($media)) {
+
             $this->medias[] = $media;
             $media->setFigure($this);
         }
@@ -278,8 +279,10 @@ class Tricks
          * @var Media $media
          */
         foreach ($this->medias as $media){
-            if($media->getType() === 1)
+            if($media->getType() === 1){
                 $movies[]=$media;
+            }
+
         }
         return $movies;
     }

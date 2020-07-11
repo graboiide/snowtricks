@@ -2,7 +2,7 @@ jQuery(function() {
     let beginLoad = 0;
     let endLoad = 3;
     let nbItems = 4;
-    let nbMedias = $('.my-carousel-item').length;
+    let nbMedias = $('.my-carousel-item').length -1;
     let w = $(window).width();
 
     $('.prev-items').hide();
@@ -12,6 +12,10 @@ jQuery(function() {
 
         w = $(window).width();console.log(w);
         breackpoint();
+    });
+    $('.modal-img').click(function () {
+        $('#exampleModal').modal('hide');
+        console.log('click');
     });
     function breackpoint() {
         if( w < 975 ){
@@ -89,9 +93,12 @@ jQuery(function() {
         e.preventDefault();
         beginLoad += nbItems;
         endLoad += nbItems;
+        console.log('endload:'+endLoad);
+        console.log('beginload:'+beginLoad);
+        console.log('medias:'+nbMedias);
         if(endLoad >= nbMedias)
             $('.next-items').hide(400);
-        if (beginLoad > nbMedias){
+        if (beginLoad >= nbMedias){
             beginLoad -= nbItems;
             endLoad -= nbItems;
         }

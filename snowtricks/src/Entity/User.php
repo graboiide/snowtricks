@@ -64,6 +64,11 @@ class User
      */
     private $comments;
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function __construct()
     {
         $this->Tricks = new ArrayCollection();

@@ -1,0 +1,34 @@
+{% macro cover(figure) %}
+    {% if figure.cover is not null  %}
+        <img src="{{ figure.cover }}" alt="" style="width: 100%" id="cover">
+    {% elseif figure.images > 0 %}
+        <img src="{{ figure.images[0].url }}" alt="" style="width: 100%" id="cover">
+    {% else %}
+        <img src="https://media.ucpa.com/t_UCPA/UCPA-SPORT-NATURE/France/00030284.jpg" alt="" style="width: 100%" id="cover">
+    {% endif %}
+{% endmacro %}
+
+{# medias ordoned #}
+{% macro mediasRanged(figure) %}
+    {% for image in figure.images %}
+        <div class="col-lg-3 col-md-6 col-sm-12 px-1 my-carousel-item ">
+            <a href="{{ image.url }}" class="call-modal" id="{{ image.caption }}">
+                <img class="card-img-top my-1" src="{{ image.url }}" alt="{{ image.caption }}" data-toggle="modal" data-target="#exampleModal">
+            </a>
+        </div>
+    {% endfor %}
+    {% for movie in figure.movies %}
+        <div class="col-lg-3 col-md-6 col-sm-12 px-1 my-carousel-item">
+            <div class="my-1 embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="{{ movie.url }}" allowfullscreen></iframe>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{# medias not ordoned for edit mode #}
+{% macro medias(medias) %}
+    {% for media in medias %}
+        {% include 'home/media-tmpl.html.twig' with {'medias' : medias,'id':loop.index0,'edit':true}%}
+    {% endfor %}
+{% endmacro %}

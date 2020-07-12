@@ -1,7 +1,7 @@
 {% macro cover(figure) %}
     {% if figure.cover is not null  %}
         <img src="{{ figure.cover }}" alt="" style="width: 100%" id="cover">
-    {% elseif figure.images > 0 %}
+    {% elseif figure.images|length > 0 %}
         <img src="{{ figure.images[0].url }}" alt="" style="width: 100%" id="cover">
     {% else %}
         <img src="https://media.ucpa.com/t_UCPA/UCPA-SPORT-NATURE/France/00030284.jpg" alt="" style="width: 100%" id="cover">

@@ -46,6 +46,10 @@ jQuery(function() {
 
         $('.modal-body').append(target);
         $('.modal-title').text('Ajouter un média');
+        $(idTarget+'_type').on('change',function () {
+            displayUploadButton();
+        });
+        displayUploadButton();
     });
 
 
@@ -59,10 +63,7 @@ jQuery(function() {
 
     $('#loader-image').on('click','.edit',function (e) {
         e.preventDefault();
-
         idTarget = $(this).parent().data('target');
-
-        $(idTarget+'_url').after($('.upload-file'));
         viewImg = $($(this).parent().data('target')+'_view img');
         let target = $($(this).parent().data('target'));
 
@@ -79,7 +80,11 @@ jQuery(function() {
         displayUploadButton();
 
     });
+    function replaceUploadfield() {
+        $(idTarget+'_url').after($('.upload-file'));
+    }
     function displayUploadButton() {
+        replaceUploadfield();
        if($(idTarget+'_type').val() === '0')
            $('.upload-file').show();
        else
@@ -163,41 +168,48 @@ jQuery(function() {
         $('.progress').show();
         uploadActive = true;
 
-        let mydata = new FormData();
-        //on ajopute le primer fichier de la liste
-        mydata.append('file', file);
-        mydata.append('greg', 45);
-        console.log(file);
+        if(file !== "undefined"){
+            let mydata = new FormData();
+            //on ajopute le primer fichier de la liste
+            mydata.append('file', file);
+            mydata.append('greg', 45);
+            $('#upload').removeClass('btn-danger').addClass('btn-primary');
 
-        $.ajax({
-            xhr: function () { // xhr qui traite la barre de progression permet de redefinir httprequest
-                myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) { // vérifie si l'upload existe
-                    myXhr.upload.addEventListener('progress', afficherAvancement, false);
+            $.ajax({
+                xhr: function () { // xhr qui traite la barre de progression permet de redefinir httprequest
+                    myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // vérifie si l'upload existe
+                        myXhr.upload.addEventListener('progress', afficherAvancement, false);
 
+                    }
+                    return myXhr;
+                },
+                url: '/admin/upload',
+                data: mydata,
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'post',
+                success: function (data,u) {
+                    $('.progress').hide();
+                    uploadActive = false;
+                    $('#upload span').text('Upload');
+                    $(idTarget+'_url').val('/uploads/'+data);
+                    $('.progress-bar').css('width',0);
+
+
+                },
+                error: function(err) {
+                    uploadActive = false;
+                    $('#upload span').text('Une erreur est survenue');
+                    $('#upload').removeClass('btn-primary').addClass('btn-danger');
+                    $('.progress').hide();
                 }
-                return myXhr;
-            },
-            url: '/admin/upload',
-            data: mydata,
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'post',
-            success: function (data,u) {
-                $('.progress').hide();
-                uploadActive = false;
-                $('#upload span').text('Upload');
-                $(idTarget+'_url').val('/uploads/'+data);
 
-            },
-            error: function(err) {
-                uploadActive = false;
-                $('#upload span').text('Upload');
-            }
+            });
+        }
 
-        });
 
 
     })  ;
@@ -206,7 +218,7 @@ jQuery(function() {
 
 
     function afficherAvancement(e) {
-        let width = (e.loaded/e.total)*100;
+        let width = Math.round((e.loaded/e.total)*100);
         $('.progress-bar').css('width',width+'%');
         $('#upload span').text(width+'%');
     }

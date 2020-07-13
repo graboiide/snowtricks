@@ -13,7 +13,7 @@
                     {% if app.user %}
                         <div class="load-more ml-auto p-2  text-center" style="position: absolute;top: 15px;right: 15px">
                             <a href="{{ path('admin_edit',{'id':figure.id}) }}"><i class="mr-2 fa fa-edit fa-2x" style="color: #476f9e"></i></a>
-                            <a href="{{ path('admin_delete',{'id':figure.id}) }}"><i class="fa fa-trash-alt fa-2x" style="color: #476f9e"></i></a>
+                            <a href="#" id="delete-figure" data-id="{{ figure.id }}" ><i class="fa fa-trash-alt fa-2x" style="color: #476f9e"></i></a>
                         </div>
                     {% endif %}
                     <div class="title-tricks col-12 text-center" ><h1 class="h1" style="font-size: 4vw">{{ figure.name }}</h1></div>
@@ -66,13 +66,14 @@
         </div>
     </div>
 </div>
-
+    {% include 'partial/modals.html.twig' %}
 
 
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript" src="/js/carousel.js"></script>
+    <script type="text/javascript" src="/js/delete.js"></script>
     <script>
     jQuery(function() {
         $('.to-tricks').remove();

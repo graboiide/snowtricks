@@ -2,8 +2,12 @@ jQuery(function() {
     let beginLoad = 0;
     let endLoad = 3;
     let nbItems = 4;
-    let nbMedias = $('.my-carousel-item').length -1;
+    let nbMedias = $('.my-carousel-item').length ;
     let w = $(window).width();
+    if(nbMedias <= nbItems){
+        $('.prev-items').remove();
+        $('.next-items').remove();
+    }
 
     $('.prev-items').hide();
     $('.my-carousel-item').hide();
@@ -31,14 +35,10 @@ jQuery(function() {
     $('.call-modal').click(function (e) {
         e.preventDefault();
         $('.modal-img').css('background-image','url('+$(this).attr('href')+')');
-
-
         $('.modal-title').text($(this).attr('id'));
-
     });
 
     $('.load-all-items').click(function (e) {
-
         e.preventDefault();
         if(!$(this).hasClass('active')){
             loadItems(0,$('.my-carousel-item').length,0);
@@ -51,13 +51,11 @@ jQuery(function() {
             $('#carousel-area').slideUp();
             $('.carousel-load').text('Afficher les médias');
         }
-
-
     });
 
     function indicator() {
         $('.indicator').removeClass('active');
-        let index = Math.floor(beginLoad/nbItems)+1;
+        let index = Math.ceil(beginLoad/nbItems)+1;
         console.log(index);
         $('#index-'+index).addClass('active');
 

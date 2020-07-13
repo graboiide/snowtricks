@@ -1,28 +1,28 @@
 
-.modal{
+.modal-custom .modal{
 
     max-height: 97vh;
     max-width: 100vw;
 }
 
-.modal-dialog{
+.modal-custom .modal-dialog{
     max-width: 100%;
     height: 100%;
 }
-.modal-content{
+.modal-custom .modal-content{
     background-color: transparent;
     border: 0;
     height: 100%;
 }
-.modal-body{
+.modal-custom .modal-body{
 
     height: 100%;
 }
-.modal-img{
+.modal-custom .modal-img{
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
 }
-.modal-header{
+.modal-custom .modal-header{
     display: none;
 }

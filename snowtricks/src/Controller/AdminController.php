@@ -31,12 +31,9 @@ class AdminController extends AbstractController
 
         if(!is_null($id)){
             $figure = $tricksRepository->findOneBy(['id'=>$id]);
-            $figure->setDateModif(new DateTime('now'));
         }
         else{
             $figure = new Tricks();
-            $figure->setDateAdd(new DateTime('now'));
-            $figure->setSlug('dfr');
             $figure->setUser($this->getUser());
         }
         //dd($figure->getImages());
@@ -58,13 +55,18 @@ class AdminController extends AbstractController
         ]);
     }
     /**
-     * @Route("/admin/remove/{id}", name="admin_delete")
+     * @Route("/admin/remove/{id}/{redirect}", name="admin_delete")
      * @IsGranted("ROLE_USER")
      */
-    public function remove($id)
+    public function remove($id,$redirect = false,EntityManagerInterface $entityManager,TricksRepository $tricksRepository)
     {
-        return $this->render('admin/edit_tricks.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+       $figure = $tricksRepository->findOneBy(['id'=>$id]);
+        $entityManager->remove($figure);
+        $entityManager->flush();
+        if(!$redirect)
+            return new Response('OK');
+
+        $this->addFlash('success','La figures <strong>'.$figure->getName().'</strong> à bien été supprimer');
+        return $this->redirectToRoute('home');
     }
 }

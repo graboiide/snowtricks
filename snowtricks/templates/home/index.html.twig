@@ -33,11 +33,17 @@
             </a>
         </div>
     </div>
+
+    {% include 'partial/modals.html.twig' %}
+
+
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/javascript" src="/js/index.js"></script>
     <script>
         jQuery(function(){
+
             let loader = $(".load-more img");
             loader.hide();
             let page = 1;

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TricksRepository;
+use App\Src\Service\Slug\Slug;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Tricks
 {
@@ -81,6 +84,29 @@ class Tricks
      *
      */
     private $family;
+
+    /**
+     * Slug automatique
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function createSlug()
+    {
+        $slugify = new Slug();
+        $this->slug = $slugify->slugify($this->name);
+    }
+    /**
+     * chnage les dates
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function modifyDate()
+    {
+        if(is_null($this->dateAdd))
+            $this->dateAdd = new DateTime('now');
+        else
+            $this->dateModif = new DateTime('now');
+    }
 
     public function __construct()
     {

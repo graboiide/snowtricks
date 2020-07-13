@@ -8,6 +8,9 @@ jQuery(function() {
     let addMedia = false;
 
     coverInfo.hide();
+
+
+
     $('#cover-edit').on('click',function (e) {
         e.preventDefault();
         if (coverEdit){

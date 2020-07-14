@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% import "macros/tricks.html.twig" as myTricks %}
 {% block title %}Liste des figures de snowboard{% endblock %}
 {% block stylesheets %} <link rel="stylesheet" href="/css/modal.css"> {% endblock %}
@@ -49,18 +50,22 @@
                 <div class="col-2">
                 </div>
                 <div class="col-lg-8 col-md-12">
-
+                    {% if app.user %}
+                        {{ form_start(form) }}
+                            {{ form_row(form.message) }}
+                            <button id="send-comment" data-id="{{ figure.id }}" class="btn btn-primary">Envoyer</button>
+                        {{ form_end(form) }}
+                    {% endif %}
                         <div class="col-12" id="comments-area">
                             {% include 'home/comments.html.twig' with {'comments' : comments}%}
+
+
                             <a href="#" id="load-comments">
                                 <div class="load-more h5 my-5 text-center p-3 d-flex justify-content-center align-items-center">
                                     <div><img src="/img/loader.gif" alt="" style="width: 30px"></div>  <div class="message-load">Charger les messages suivantes (<span id="nbComments">{{ nbComments-nbLoad }}</span> restants) </div>
                                 </div>
                             </a>
-
                         </div>
-
-
                 </div>
             </div>
         </div>
@@ -74,6 +79,7 @@
 {% block javascripts %}
     <script type="text/javascript" src="/js/carousel.js"></script>
     <script type="text/javascript" src="/js/delete.js"></script>
+    <script type="text/javascript" src="/js/comments.js"></script>
     <script>
     jQuery(function() {
         $('.to-tricks').remove();

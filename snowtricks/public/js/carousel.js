@@ -14,7 +14,7 @@ jQuery(function() {
     breackpoint();
     $(window).resize(function() {
 
-        w = $(window).width();console.log(w);
+        w = $(window).width();
         breackpoint();
     });
     $('.modal-img').click(function () {
@@ -56,7 +56,7 @@ jQuery(function() {
     function indicator() {
         $('.indicator').removeClass('active');
         let index = Math.ceil(beginLoad/nbItems)+1;
-        console.log(index);
+
         $('#index-'+index).addClass('active');
 
     }
@@ -91,9 +91,7 @@ jQuery(function() {
         e.preventDefault();
         beginLoad += nbItems;
         endLoad += nbItems;
-        console.log('endload:'+endLoad);
-        console.log('beginload:'+beginLoad);
-        console.log('medias:'+nbMedias);
+
         if(endLoad >= nbMedias)
             $('.next-items').hide(400);
         if (beginLoad >= nbMedias){

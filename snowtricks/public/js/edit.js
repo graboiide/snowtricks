@@ -84,7 +84,13 @@ jQuery(function() {
 
     });
     function replaceUploadfield() {
-        $(idTarget+'_url').after($('.upload-file'));
+        $('.upload-file').insertAfter($(idTarget+'_url'));
+        //corrige un bug de multiplication  j'ai pas trouver mieux pour le moment
+        $('.upload-file').each(function (i) {
+            if(i > 0)
+                $(this).remove();
+        });
+
     }
     function displayUploadButton() {
         replaceUploadfield();
@@ -93,10 +99,10 @@ jQuery(function() {
        else
            $('.upload-file').hide();
     }
-    function autoUrl(){ console.log(idTarget+'_url');
+    function autoUrl(){
         $(idTarget+'_url').on('change',function (e) {
 
-            console.log($(this).val().replace('/^https://youtu.be/g','https://youtube.com/embed'));
+
             $(idTarget+'_url').val($(this).val().replace(/^https:\/\/youtu.be/,'https://www.youtube.com/embed'));
             $(idTarget+'_url').val($(this).val().replace(/watch\?v=/,'embed/'));
             $(idTarget+'_url').val($(this).val().replaceAll(/&+[*]/g,''));
@@ -114,7 +120,10 @@ jQuery(function() {
         view.remove();
 
     });
+
     $('.save').on('click',function (e) {
+
+       // $('.upload-file').insertAfter($('.modal-body'));
         // si on ajoute un media on ajoute en premier la card
         let type = $(idTarget+'_type').val();
         let view = $(idTarget+'_view');
@@ -126,7 +135,8 @@ jQuery(function() {
                 let tmpl;
                 tmpl = data
                     .replace(/__id__/g,index)
-                    .replace(/__url__/g,src);
+                    .replace(/__url__/g,src)
+                    .replace(/__caption__/g,$(idTarget+'_caption').val());
 
                 $('#add-media').before(tmpl);
                 addMedia = false;
@@ -137,9 +147,11 @@ jQuery(function() {
 
         $.get('/generate/media/'+$(idTarget+'_type').val(), function( data ) {
             let tmpl;
+
             tmpl = data
                 .replace(/__id__/g,view.data('id'))
-                .replace(/__url__/g,src);
+                .replace(/__url__/g,src)
+                .replace(/__caption__/g,$(idTarget+'_caption').val());
 
             view.before(tmpl);
             view.remove();

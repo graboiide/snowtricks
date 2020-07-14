@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -57,11 +60,15 @@ class HomeController extends AbstractController
      * @param $slug
      * @param TricksRepository $repo
      * @param CommentRepository $repoComment
+     * @param Request $request
      * @return Response
      */
-    public function show($slug,TricksRepository $repo,CommentRepository $repoComment):Response
+    public function show($slug, TricksRepository $repo, CommentRepository $repoComment):Response
     {
         $figure = $repo->findOneBy(['slug'=>$slug]);
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class,$comment);
+
         $figureId = $figure->getId();
         return $this->render('home/show.html.twig', [
             'figure'=>$figure,
@@ -69,7 +76,8 @@ class HomeController extends AbstractController
                 ['figure'=>$figureId],
                 ['id'=>'DESC'],2,0),
             'nbLoad'=>2,
-            'nbComments'=>$repoComment->count(['figure'=>$figure->getId()])
+            'nbComments'=>$repoComment->count(['figure'=>$figure->getId()]),
+            'form'=>$formComment->createView()
         ]);
     }
 

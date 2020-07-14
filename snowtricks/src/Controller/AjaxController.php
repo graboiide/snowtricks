@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Repository\CommentRepository;
 use App\Repository\TricksRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -22,6 +24,68 @@ use Symfony\Component\Serializer\Serializer;
 class AjaxController extends AbstractController
 {
 
+    /**
+     * @Route("/addComment",name="add_comment")
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function addComment(EntityManagerInterface $entityManager,Request $request,TricksRepository $tricksRepository)
+    {
+        $comment = new Comment();
+        $figure = $tricksRepository->findOneBy(['id'=>$request->request->get('idFigure')]);
+        $comment
+            ->setFigure($figure)
+            ->setUser($this->getUser())
+            ->setMessage($request->request->get('message'));
+        $entityManager->persist($comment);
+        $entityManager->flush();
+        return $this->render('home/comments.html.twig',['comments'=>[$comment]]);
+    }
+
+    /**
+     * @Route("/removeComment/{id}",name="remove_comment")
+     * @param $id
+     * @IsGranted("ROLE_USER")
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param CommentRepository $commentRepository
+     * @return Response
+     */
+    public function removeComment($id,EntityManagerInterface $entityManager,Request $request,CommentRepository $commentRepository)
+    {
+        $comment = $commentRepository->findOneBy(['id'=>$id]);
+        if($this->isUserOrAdmin($comment->getUser())){
+            $entityManager->remove($comment);
+            $entityManager->flush();
+            return new Response('Ok');
+        }
+
+        return new Response('Error');
+    }
+
+
+    /**
+     * @Route("/editComment",name="remove_comment")
+     * @param $id
+     * @IsGranted("ROLE_USER")
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param CommentRepository $commentRepository
+     * @return Response
+     */
+    public function editComment(EntityManagerInterface $entityManager,Request $request,CommentRepository $commentRepository)
+    {
+
+        $comment = $commentRepository->findOneBy(['id'=>$request->request->get('id')]);
+        if($this->isUserOrAdmin($comment->getUser())){
+            $comment->setMessage($request->request->get('message'));
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            return new Response('OK');
+        }
+
+        return new Response('Error');
+    }
 
     /**
      * @Route("/generate/media/{type}", name="load_media")
@@ -47,11 +111,7 @@ class AjaxController extends AbstractController
         if(isset($request->files)) {
             $tabExt = array('jpg', 'gif', 'png', 'jpeg');
             $uniqID = uniqid();
-
             $file = $request->files->get('file');
-
-
-
             $nameModify = 'big_'.$uniqID.'_'.$file->getClientOriginalName();
             $extension = strtolower($file->getClientOriginalExtension());
             //$name = $file->getClientOriginalName();
@@ -65,6 +125,13 @@ class AjaxController extends AbstractController
         $response = new Response(json_encode($nameModify));
         $response->headers->set('Content-Type','application/json');
         return $response;
+    }
+
+    private function isUserOrAdmin($userToCompare){
+        if($userToCompare === $this->getUser() or in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
+            return true;
+        }
+        return false;
     }
 
 }

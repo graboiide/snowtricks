@@ -59,7 +59,9 @@
 
                 <div class="row mb-5">
                     <div class="col-12 d-flex justify-content-end">
-                        <input type="submit" id="delete-figure" data-id="{{ figure.id }}" class="btn btn-danger mr-3" value="Supprimer">
+                        {% if figure.id is not null %}
+                            <input type="submit" id="delete-figure" data-id="{{ figure.id }}" class="btn btn-danger mr-3" value="Supprimer">
+                        {% endif %}
                         <input type="submit"  class="btn btn-primary" value="Sauvegarder">
                     </div>
 
@@ -95,22 +97,7 @@
 
         </div>
     </div>
-    <div class="d-none">
-        <div class="my-1 embed-responsive embed-responsive-16by9 removable" id="copy-movie">
-            <iframe class="embed-responsive-item" src="" allowfullscreen></iframe>
-        </div>
-        <img class="card-img-top my-1 removable" src="" alt="" id="copy-img">
-        <div class="col-lg-2 col-md-4 col-sm-6 px-1 my-carousel-item" id="copy-card">
-            <div class="load-more ml-auto p-2 col-12 text-right" data-target="__name__">
-                <a href="#" class="edit" data-title="" data-toggle="modal" data-target="#exampleModal">
-                    <i class="mr-2 fa fa-edit fa-2x" style="color: #476f9e"></i>
-                </a>
-                <a href="#" class="remove" data-target="__name__">
-                    <i class="fa fa-trash-alt fa-2x" style="color: #476f9e"></i>
-                </a>
-            </div>
-        </div>
-    </div>
+
 
     {% include 'partial/modals.html.twig' %}
 

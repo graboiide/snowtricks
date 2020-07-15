@@ -34,6 +34,7 @@ class HomeController extends AbstractController
     public function index(TricksRepository $repo):Response
     {
         $tricks = $repo->findBy([],['id'=>'DESC'],12,0);
+
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
             'nbTricks' => $repo->count([]),

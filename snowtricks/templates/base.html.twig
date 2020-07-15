@@ -17,8 +17,11 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    {% include 'partial/flash-messages.html.twig' %}
     <header>
+
          <div class="container-fluid" id="home">
+
                 <div class="row">
                     <div class="img-header">
                         <nav class="navbar navbar-expand-sm navbar-dark fixed-top my-nav" >
@@ -52,6 +55,7 @@
                             </ul>
                             </div>
                         </nav>
+
                         <div class="to-tricks">
                             <a href="#tricks" class="smooth-scroll">
                                 <div class="round">
@@ -63,17 +67,15 @@
                             </a>
                         </div>
 
-                        <div class="reverse-degrade d-flex justif">
-
-                        </div>
+                        <div class="reverse-degrade d-flex justif"></div>
                     </div>
-                    <div class="degrade">
-
-                    </div>
+                    <div class="degrade"></div>
                 </div>
             </div>
     </header>
+
         {% block body %}{% endblock %}
+    <script type="text/javascript" src="/js/flash.js"></script>
     <script>
         $(".to-tricks-top").hide();
         $(window).scroll(function() {

@@ -45,14 +45,28 @@ class AdminController extends AbstractController
                 $media->setFigure($figure);
                 $manager->persist($media);
             }
+            $this->flashMessage($figure);
             $manager->persist($figure);
             $manager->flush();
+
             return $this->redirectToRoute('show_tricks',['slug'=>$figure->getSlug()]);
         }
         return $this->render('admin/edit_tricks.html.twig', [
             'figure' => $figure,
             'form'=>$form->createView()
         ]);
+    }
+
+    /**
+     * Permet simplement d'imprimer le bon message flash modifier ou ajouter
+     * @param Tricks $figure
+     */
+    private function flashMessage(Tricks $figure)
+    {
+        if(is_null($figure->getId()))
+            $this->addFlash('success','Votre figure à bien été ajouter');
+        else
+            $this->addFlash('success','Votre figure à bien été modifier');
     }
     /**
      * @Route("/admin/remove/{id}/{redirect}", name="admin_delete")

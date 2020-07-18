@@ -15,11 +15,13 @@
 
                 <div class=" ml-auto p-2 d-flex justify-content-between align-items-center ">
                     <h5 class="card-title d-block text-left" >{{figure.name}}</h5>
-                    {% if app.user %}
+                    {% if app.user and figure.isAuthor %}
+
                         <div class="d-flex flex-nowrap">
                             <a href="{{ path('admin_edit',{id:figure.id}) }}"><i class="mr-2 fa fa-edit" style="color: #476f9e"></i></a>
                             <a href="#" data-id="{{ figure.id }}" class="remove-tricks"><i class="fa fa-trash-alt" style="color: #476f9e"></i></a>
                         </div>
+
                     {% endif %}
 
                 </div>

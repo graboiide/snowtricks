@@ -18,19 +18,7 @@ class MediaType extends AbstractType
             ->add('url',null,['label'=>'Url'])
             ->add('type',ChoiceType::class,['choices'=>["Image"=>0,"Vidéo"=>1]])
             ->add('caption',null,['label'=>'Titre'])
-            ->add('upload',FileType::class,[
-                'label'=>'téléverser une image',
-                'mapped'=>false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '2048k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid image',
-                    ])]
-            ])
+            ->add('test',FileType::class,['label'=>'Titre',"mapped"=>false])
 
         ;
     }

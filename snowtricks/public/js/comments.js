@@ -29,9 +29,6 @@ jQuery(function() {
         e.preventDefault();
         let comment = $(this).parent().parent().parent();
 
-
-
-
         $.ajax({
             url : '/removeComment/'+$(this).data('id'),
             type : 'GET',

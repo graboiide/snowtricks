@@ -13,7 +13,7 @@
             </div>
             <div class="comment-txt-{{ comment.id }}">{{ comment.message }}</div>
             <div class="edit-{{ comment.id }}"></div>
-            {% if app.user and (app.user is same as (comment.user) or 'ROLE_ADMIN' in app.user.roles ) %}
+            {% if app.user and (app.user is same as (comment.user) or app.user.asRole('ROLE_ADMIN') ) %}
             <div class="ml-auto p-2 d-flex justify-content-end align-items-center text-right">
 
                 <a href="#" id="edit_comment" data-id="{{ comment.id }}"><i class="mr-2 fa fa-edit d-block" style="color: #476f9e"></i></a>

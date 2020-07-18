@@ -43,11 +43,13 @@
     <script type="text/javascript" src="/js/index.js"></script>
     <script>
         jQuery(function(){
-
+            $(".img-header").css('position','initial');
             let loader = $(".load-more img");
             loader.hide();
             let page = 1;
-            let nbTricks = {{ nbTricks }}-12;
+            let nbTricks = {{ nbTricks }}-{{ nbLoad }};
+            if(nbTricks < 1)
+                $("#load-tricks").hide();
             let nbLoad = {{ nbLoad }};
             $("#load-tricks").click(function(e){
                 loader.show();

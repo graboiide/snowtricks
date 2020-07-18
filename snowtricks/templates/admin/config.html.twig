@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
+{% block title %}Configuration{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row center-div d-flex justify-content-center" >
+
+            <div class="col-lg-8 col-md-12 p-3" style="background-color: white">
+                <h1 style="color: #476f9e" class=" mb-5">Configuration</h1>
+                {{ form_start(form) }}
+                {{ form_row(form.nbTricksDisplay) }}
+                {{ form_row(form.nbMessagesDisplay) }}
+                {{ form_row(form.emailAdmin) }}
+                {{ form_row(form.protectLevel) }}
+
+                <div class="mb-4" style="font-family: Roboto,sans-serif;color: #476f9e;font-weight: bold">
+                    <div>
+                        <i class="fas fa-layer-group mr-3"></i><a href="{{ path('admin_group') }}" style="color: #F5871F">Gestions des groupes de figure</a>
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+
+

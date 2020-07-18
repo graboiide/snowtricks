@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Repository\CommentRepository;
+use App\Repository\GroupRepository;
 use App\Repository\TricksRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,13 +66,12 @@ class AjaxController extends AbstractController
 
 
     /**
-     * @Route("/editComment",name="remove_comment")
-     * @param $id
-     * @IsGranted("ROLE_USER")
+     * @Route("/editComment",name="edit_comment")
      * @param EntityManagerInterface $entityManager
      * @param Request $request
      * @param CommentRepository $commentRepository
      * @return Response
+     * @IsGranted("ROLE_USER")
      */
     public function editComment(EntityManagerInterface $entityManager,Request $request,CommentRepository $commentRepository)
     {
@@ -126,6 +126,24 @@ class AjaxController extends AbstractController
         $response->headers->set('Content-Type','application/json');
         return $response;
     }
+
+    /**
+     * @Route("/admin/group/remove/{id}", name="admin_removeGroup")
+     * @IsGranted("ROLE_ADMIN")
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function removeGroup($id,EntityManagerInterface $entityManager,GroupRepository $groupRepository,Request $request)
+    {
+        $groupToRemove = $groupRepository->findOneBy(['id'=>$id]);
+        if(!is_null($groupToRemove)){
+            $entityManager->remove($groupToRemove);
+            $entityManager->flush();
+            return new Response('OK');
+        }
+        return new Response('error id');
+    }
+
 
     private function isUserOrAdmin($userToCompare){
         if($userToCompare === $this->getUser() or in_array('ROLE_ADMIN',$this->getUser()->getRoles())){

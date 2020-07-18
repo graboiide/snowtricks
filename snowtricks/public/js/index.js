@@ -14,7 +14,8 @@ jQuery(function() {
         $('#deleteModal').modal('show');
     });
 
-    $('#confirm-delete').on('click',function () {
+    $('.confirm-delete').on('click',function (e) {
+        e.preventDefault();
         $.get( "/admin/remove/"+idtarget)
             .done(function( data ) {
                 parent.find('.flex-nowrap').remove();

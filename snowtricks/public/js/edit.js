@@ -10,7 +10,9 @@ jQuery(function() {
     coverInfo.hide();
 
 
-
+    /**
+     * EDIT COVER
+     */
     $('#cover-edit').on('click',function (e) {
         e.preventDefault();
         if (coverEdit){
@@ -29,9 +31,26 @@ jQuery(function() {
                 $('#tricks_cover').val($(this).attr('src'));
 
             });
-            return;
+
         }
     });
+
+
+
+    /**
+     * REMOVE COVER
+     */
+    $('#cover-remove').on('click',function (e) {
+        $('#cover').attr('src',$('#tricks_medias_0_view img').attr('src'));
+        $('#tricks_cover').val('');
+    });
+    $('#tricks_name').on('keyup',function (e) {
+        $('.title-tricks h1').text($('#tricks_name').val());
+    });
+
+    /**
+     * ADD MEDIA
+     */
     $('#add-media').on('click',function (e) {
         e.preventDefault();
         addMedia = true;
@@ -55,15 +74,9 @@ jQuery(function() {
         displayUploadButton();
     });
 
-
-    $('#cover-remove').on('click',function (e) {
-        $('#cover').attr('src',$('#tricks_medias_0_view img').attr('src'));
-        $('#tricks_cover').val('');
-    });
-    $('#tricks_name').on('keyup',function (e) {
-        $('.title-tricks h1').text($('#tricks_name').val());
-    });
-
+    /**
+     * EDIT MEDIA
+     */
     $('#loader-image').on('click','.edit',function (e) {
         e.preventDefault();
         idTarget = $(this).parent().data('target');
@@ -112,6 +125,9 @@ jQuery(function() {
         });
     }
 
+    /**
+     * REMOVE MEDIA
+     */
     $('#loader-image').on('click','.remove',function (e) {
         e.preventDefault();
         let target = $($(this).parent().data('target'));
@@ -121,16 +137,18 @@ jQuery(function() {
 
     });
 
-    $('.save').on('click',function (e) {
+    /**
+     * SAVE
+     */
 
-       // $('.upload-file').insertAfter($('.modal-body'));
-        // si on ajoute un media on ajoute en premier la card
+    function editMedia(){
         let type = $(idTarget+'_type').val();
         let view = $(idTarget+'_view');
         let src = $(idTarget+'_url').val();
+
+
         if(addMedia){
-            const id= idTarget.replace(/#/,"");
-            //appel le prototype d'un media
+                        //appel le prototype d'un media
             $.get('/generate/media/'+$(idTarget+'_type').val(), function( data ) {
                 let tmpl;
                 tmpl = data
@@ -141,101 +159,117 @@ jQuery(function() {
                 $('#add-media').before(tmpl);
                 addMedia = false;
                 index++;
+                emptyMedias();
             });
             return;
         }
 
         $.get('/generate/media/'+$(idTarget+'_type').val(), function( data ) {
             let tmpl;
-
             tmpl = data
                 .replace(/__id__/g,view.data('id'))
                 .replace(/__url__/g,src)
                 .replace(/__caption__/g,$(idTarget+'_caption').val());
-
             view.before(tmpl);
             view.remove();
 
-            index++;
+            emptyMedias();
         });
 
 
+    }
+    function emptyMedias(){
 
-    });
+        if($(idTarget+'_url').val() === '' && $(idTarget+'_caption').val() === ''){
+            $('.modal-body').append($('.upload-file'));
+            $(idTarget).remove();
+            $(idTarget+'_view').remove();
 
+            console.log(idTarget+'_view');
+        }
+        if($(idTarget+'_url').val() === '' || $(idTarget+'_caption').val() === ''){
+            $(idTarget+'_view').css('border','3px solid red');
+        }
+
+    }
+
+    /**
+     * CLOSE MODAL
+     */
     $('#exampleModal').on('hidden.bs.modal', function (e) {
         $('.form_tricks').addClass('d-none');
+            editMedia();
+
     });
 
-
+    /**
+     * UPLOAD
+     */
     $('.progress').hide();
-    let uploadActive= false;
+    let uploadActive = false;
 
-    $('#upload').on('click',function (e) {
-        if(!uploadActive){
-            e.preventDefault();
+    $('#upload').on('click', function (e) {
+        e.preventDefault();
+        if (!uploadActive) {
+
             $('#file').click();
         }
 
     });
-    $('#file').on('change',function (e) {
+    $('#file').on('change', function (e) {
         let file = $('#file').get(0).files[0];
         $('.progress').show();
         uploadActive = true;
 
-        if(file !== "undefined"){
-            let mydata = new FormData();
-            //on ajopute le primer fichier de la liste
-            mydata.append('file', file);
-            mydata.append('greg', 45);
-            $('#upload').removeClass('btn-danger').addClass('btn-primary');
 
-            $.ajax({
-                xhr: function () { // xhr qui traite la barre de progression permet de redefinir httprequest
-                    myXhr = $.ajaxSettings.xhr();
-                    if (myXhr.upload) { // vérifie si l'upload existe
-                        myXhr.upload.addEventListener('progress', afficherAvancement, false);
+        let mydata = new FormData();
+        //on ajopute le primer fichier de la liste
+        mydata.append('file', file);
+        $('#upload').removeClass('btn-danger').addClass('btn-primary');
 
-                    }
-                    return myXhr;
-                },
-                url: '/admin/upload',
-                data: mydata,
-                dataType: 'json',
-                cache: false,
-                contentType: false,
-                processData: false,
-                type: 'post',
-                success: function (data,u) {
-                    $('.progress').hide();
-                    uploadActive = false;
-                    $('#upload span').text('Upload');
-                    $(idTarget+'_url').val('/uploads/'+data);
-                    $('.progress-bar').css('width',0);
+        $.ajax({
+            xhr: function () { // xhr qui traite la barre de progression permet de redefinir httprequest
+                myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // vérifie si l'upload existe
+                    console.log(myXhr.upload);
+                    myXhr.upload.addEventListener('progress', afficherAvancement, false);
 
-
-                },
-                error: function(err) {
-                    uploadActive = false;
-                    $('#upload span').text('Une erreur est survenue');
-                    $('#upload').removeClass('btn-primary').addClass('btn-danger');
-                    $('.progress').hide();
                 }
+                return myXhr;
+            },
+            url: '/admin/upload',
+            data: mydata,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'post',
+            success: function (data, u) {
+                $('.progress').hide();
+                uploadActive = false;
+                $('#upload span').text('Upload');
+                $(idTarget + '_url').val('/uploads/' + data);
+                $('.progress-bar').css('width', 0);
+            },
+            error: function (err) {
+                uploadActive = false;
+                $('#upload span').text('Une erreur est survenue');
+                $('#upload').removeClass('btn-primary').addClass('btn-danger');
+                $('.progress').hide();
+            }
 
-            });
+        });
+
+        function afficherAvancement(e) {
+            console.log('total:' + e.total);
+            console.log('progress:' + e.loaded);
+            let width = Math.floor((e.loaded / e.total) * 100);
+            $('.progress-bar').css('width', width + '%');
+            $('#upload span').text(width + '%');
+
+
         }
 
+    });
 
-
-    })  ;
-
-
-
-
-    function afficherAvancement(e) {
-        let width = Math.round((e.loaded/e.total)*100);
-        $('.progress-bar').css('width',width+'%');
-        $('#upload span').text(width+'%');
-    }
 
 });

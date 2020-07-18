@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error 404 not found{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row center-div d-flex justify-content-center" >
+
+            <div class="col-lg-8 col-md-12 p-3" style="background-color: white">
+                <h1 style="color: #476f9e" class=" mb-5">Error 404</h1>
+               <p>L'adresse demander n'existe pas, pas de problemes vous pouvez rejoindre la page d'acceuil en cliquant sur le bouton juste en dessous.</p>
+                <a href="{{ path('home') }}" class="btn btn-primary">Retourner à l'acceuil</a>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

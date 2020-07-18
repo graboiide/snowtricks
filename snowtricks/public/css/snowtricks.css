@@ -25,6 +25,7 @@ body{
     padding: 10px 5px;
 }
 .img-header{
+    position: absolute;
     height: 100vh;
     width: 100%;
     background-image: url("/img/snowtricks2.png");
@@ -99,9 +100,7 @@ a:hover{
     text-decoration: none;
 }
 .center-div{
-    position: absolute;
-    top: 80px;
-    width: 100%;
+    margin-top: 60px;
 }
 .title-tricks{
     position: absolute;
@@ -119,19 +118,19 @@ a:hover{
 
 }
 .alert-success{
-    color: #4d7b4f;
+    color: #ffffff;
     padding: 0.75rem;
     background-color: #62b166;
     border-bottom: 5px solid #4d7b4f;
 }
 .alert-danger{
-    color: #821315;
+    color: #ffffff;
     padding: 0.75rem;
     background-color: #d24441;
     border-bottom: 5px solid #821315;
 }
 .alert-notify{
-    color: #384570;
+    color: #ffffff;
     padding: 0.75rem;
     background-color: #476f9e;
     border-bottom: 5px solid #384570;
@@ -146,6 +145,14 @@ a:hover{
     border-left: 0;
     border-right: 0;
 
+}
+footer{
+    height: 150px;
+    border-top: 1px solid rgba(221, 221, 221, 0.33);
+}
+footer div:first-child{
+    color: #476f9e;
+    font-size: 15px;
 }
 @media only screen and (max-device-width: 768px) {
     .img-header{

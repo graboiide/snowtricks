@@ -8,10 +8,12 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
+ * @UniqueEntity(fields={"slug"},message="Cette figure existe déja veuillez en créer une autre ou la modifier")
  * @ORM\HasLifecycleCallbacks()
  */
 class Tricks
@@ -84,6 +86,23 @@ class Tricks
      *
      */
     private $family;
+    private $isAuthor;
+
+    /**
+     * @return mixed
+     */
+    public function getIsAuthor()
+    {
+        return $this->isAuthor;
+    }
+
+    /**
+     * @param mixed $autorizeEdit
+     */
+    public function setIsAuthor($autorizeEdit): void
+    {
+        $this->isAuthor = $autorizeEdit;
+    }
 
     /**
      * Slug automatique

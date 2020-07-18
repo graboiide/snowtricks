@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Tricks;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use App\Repository\ConfigRepository;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -18,13 +20,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class HomeController extends AbstractController
+class HomeController extends BackController
 {
-    private $config;
-    public function __construct()
-    {
-        //charger la config ici
-    }
+
 
     /**
      * @Route("/", name="home")
@@ -33,12 +31,13 @@ class HomeController extends AbstractController
      */
     public function index(TricksRepository $repo):Response
     {
-        $tricks = $repo->findBy([],['id'=>'DESC'],12,0);
+        $nbTricksDisplay = $this->config->getNbTricksDisplay();
+        $tricks = $this->checkPermEditTricks($repo->findBy([],['id'=>'DESC'],$nbTricksDisplay,0));
 
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
             'nbTricks' => $repo->count([]),
-            'nbLoad' => 12
+            'nbLoad' => $nbTricksDisplay
         ]);
     }
 
@@ -50,7 +49,7 @@ class HomeController extends AbstractController
      */
     public function loadTricks($page,TricksRepository $repo):Response
     {
-        $tricks = $repo->findBy([],['id'=>'DESC'],12,$page * 12);
+        $tricks = $this->checkPermEditTricks($repo->findBy([],['id'=>'DESC'],12,$page * 12));
         return $this->render('home/tricks.html.twig', [
             'tricks' => $tricks
         ]);
@@ -67,6 +66,7 @@ class HomeController extends AbstractController
     public function show($slug, TricksRepository $repo, CommentRepository $repoComment):Response
     {
         $figure = $repo->findOneBy(['slug'=>$slug]);
+        $figure = $this->checkPermEditTricks([$figure])[0];
         $comment = new Comment();
         $formComment = $this->createForm(CommentType::class,$comment);
 
@@ -75,8 +75,8 @@ class HomeController extends AbstractController
             'figure'=>$figure,
             'comments'=>$repoComment->findBy(
                 ['figure'=>$figureId],
-                ['id'=>'DESC'],2,0),
-            'nbLoad'=>2,
+                ['id'=>'DESC'],$this->config->getNbMessagesDisplay(),0),
+            'nbLoad'=>$this->config->getNbMessagesDisplay(),
             'nbComments'=>$repoComment->count(['figure'=>$figure->getId()]),
             'form'=>$formComment->createView()
         ]);
@@ -97,4 +97,22 @@ class HomeController extends AbstractController
             'comments'=>$comments
         ]);
     }
+    /**
+     * Retourne les figures avec l'autorisation d'édition
+     * @param $tricks
+     * @return mixed
+     */
+    protected function checkPermEditTricks($tricks)
+    {
+        /**
+         * @var Tricks $figure
+         */
+        foreach ($tricks as $figure){
+            $figure->setIsAuthor(false);
+            if ($this->getUser() && $this->isAuthorGranted($figure) )
+                $figure->setIsAuthor(true);
+        }
+        return $tricks;
+    }
+
 }

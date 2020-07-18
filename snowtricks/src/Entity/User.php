@@ -94,6 +94,10 @@ class User implements UserInterface
     {
         return $this->name;
     }
+    public function AsRole($roleName)
+    {
+        return in_array($roleName,$this->getRoles());
+    }
 
     public function __construct()
     {

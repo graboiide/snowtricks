@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% import "macros/tricks.html.twig" as myTricks %}
+{% block title %}Liste des figures de snowboard{% endblock %}
+{% block stylesheets %} <link rel="stylesheet" href="/css/modal.css"> {% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row center-div">
+        <div class="col-2"></div>
+
+        <div class="col-lg-8 col-md-12" style="background-color: white">
+            <div class="row">
+                <div class="col-12 text-center p-0">
+                    {% if figure.isAuthor %}
+                        <div class="load-more ml-auto p-2  text-center" style="position: absolute;top: 15px;right: 15px">
+                            <a href="{{ path('admin_edit',{'id':figure.id}) }}"><i class="mr-2 fa fa-edit fa-2x" style="color: #476f9e"></i></a>
+                            <a href="#" id="delete-figure" data-id="{{ figure.id }}" ><i class="fa fa-trash-alt fa-2x" style="color: #476f9e"></i></a>
+                        </div>
+                    {% endif %}
+                    <div class="title-tricks col-12 text-center" ><h1 class="h1" style="font-size: 4vw">{{ figure.name }}</h1></div>
+                    {{ myTricks.cover(figure) }}
+                </div>
+            </div>
+                {% include 'home/caroussel.html.twig' with {'figure' : figure}%}
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="descr-tricks p-3 pl-5">
+                        {{ figure.description }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="load-more p-2 mx-3">
+                        Groupe : {{ figure.family.name }}
+                    </div>
+                    <div class="load-more p-2 mx-3">
+                        Ajouté le {{ figure.dateAdd|date("d-m-Y") }}
+                    </div>
+                    {% if figure.dateModif is not empty %}
+                        <div class="load-more p-2 mx-3">
+                            Modifier le {{ figure.dateModif|date("d-m-Y") }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mt-5" id="comment-row">
+                <div class="col-2">
+                </div>
+                <div class="col-lg-8 col-md-12">
+                    {% if app.user %}
+                        {{ form_start(form) }}
+                            {{ form_row(form.message) }}
+                            <button id="send-comment" data-id="{{ figure.id }}" class="btn btn-primary">Envoyer</button>
+                        {{ form_end(form) }}
+                    {% endif %}
+                        <div class="col-12" id="comments-area">
+                            {% include 'home/comments.html.twig' with {'comments' : comments}%}
+
+
+                            <a href="#" id="load-comments">
+                                <div class="load-more h5 my-5 text-center p-3 d-flex justify-content-center align-items-center">
+                                    <div><img src="/img/loader.gif" alt="" style="width: 30px"></div>  <div class="message-load">Charger les messages suivantes (<span id="nbComments">{{ nbComments-nbLoad }}</span> restants) </div>
+                                </div>
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% include 'partial/modals.html.twig' %}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/js/carousel.js"></script>
+    <script type="text/javascript" src="/js/delete.js"></script>
+    <script type="text/javascript" src="/js/comments.js"></script>
+    <script>
+    jQuery(function() {
+        //$('footer').parent().appendTo($('#comment-row'));
+        $('.to-tricks').remove();
+            let loadComm = $("#load-comments");
+            let loader = $(".load-more img");
+
+            loader.hide();
+
+            let page = 1;
+            let nbComments = {{ nbComments }}-{{ nbLoad }};
+
+            if(nbComments <= 0)
+               loadComm.hide();
+
+            let nbLoad = {{ nbLoad }};
+            loadComm.click(function(e){
+                loader.show();
+                $('.message-load').hide();
+                e.preventDefault();
+                $.ajax({
+                    url : '/comments/'+page+'/{{ figure.id }}',
+                    type : 'GET',
+                    dataType : 'html',
+                    success : function(data, statut){
+                        page++;
+                        if(nbComments > 0){
+                            $('#load-comments').before(data);
+                            nbComments -= nbLoad;
+
+                            $('#nbComments').text(nbComments);
+                        }
+                        if(nbComments <= 0){
+                            $('#load-comments').hide();
+                        }
+                        loader.hide();
+                        $('.message-load').show();
+                    },
+
+                    error : function(resultat, statut, erreur){
+                        console.log('error');
+                    }
+
+                });
+
+            });
+        });
+    </script>
+{% endblock %}
+
+

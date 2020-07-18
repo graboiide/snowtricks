@@ -1,0 +1,31 @@
+{% import "macros/tricks.html.twig" as myTricks %}
+{% for figure in tricks %}
+    {% if figure.images is not empty %}
+        {% set cover = figure.images[0].url %}
+    {% else %}
+        {% set cover = '/img/not-found.png' %}
+    {% endif %}
+    <div class="col-lg-3 col-md-12  mt-lg-4 mt-md-5">
+        <div class="card">
+            <a href="{{ path('show_tricks',{'slug':figure.slug}) }}">
+
+                {{ myTricks.cover(figure) }}
+            </a>
+            <div class="card-body ">
+
+                <div class=" ml-auto p-2 d-flex justify-content-between align-items-center ">
+                    <h5 class="card-title d-block text-left" >{{figure.name}}</h5>
+                    {% if app.user and figure.isAuthor %}
+
+                        <div class="d-flex flex-nowrap">
+                            <a href="{{ path('admin_edit',{id:figure.id}) }}"><i class="mr-2 fa fa-edit" style="color: #476f9e"></i></a>
+                            <a href="#" data-id="{{ figure.id }}" class="remove-tricks"><i class="fa fa-trash-alt" style="color: #476f9e"></i></a>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,35 @@
+
+{% for comment in comments %}
+    <div class="d-flex comment mt-3 " >
+        <div class="">
+            <img class="rounded-circle" src="{{ comment.user.avatar }}" alt="" style="width: 80px">
+        </div>
+        <div class=" p-3" style="width: 100%">
+            <div class="mb-1 h5" >{{ comment.user.name }}
+                <span class="text-right mt-1" style="color: #c0c0c0;font-size: 13px">
+                    Le {{ comment.date|date("d-m-y") }} à {{ comment.date|date("H:i") }}
+                </span>
+
+            </div>
+            <div class="comment-txt-{{ comment.id }}">{{ comment.message }}</div>
+            <div class="edit-{{ comment.id }}"></div>
+            {% if app.user and (app.user is same as (comment.user) or app.user.asRole('ROLE_ADMIN') ) %}
+            <div class="ml-auto p-2 d-flex justify-content-end align-items-center text-right">
+
+                <a href="#" id="edit_comment" data-id="{{ comment.id }}"><i class="mr-2 fa fa-edit d-block" style="color: #476f9e"></i></a>
+                <a href="#" id="delete_comment" data-id="{{ comment.id }}"><i class="fa fa-trash-alt d-block" style="color: #476f9e"></i></a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div id="textarea-edit" class="d-none">
+        <div class="form-group">
+            <label class="form-control d-none" for="edit-comment-textarea">Modifier votre texte</label>
+            <textarea name="edit" id="edit-comment-textarea" rows="10" style="width: 100%;border: 1px solid #476f9e;color: #476f9e"></textarea>
+            <a href="#" class="valid-edit" style="color: #476f9e">Modifier</a> - <a href="#" class="abort" style="color: #476f9e">Annuler</a>
+        </div>
+
+    </div>
+{% endfor %}

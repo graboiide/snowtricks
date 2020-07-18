@@ -1,0 +1,67 @@
+{% import "macros/tricks.html.twig" as myTricks %}
+
+<div class="d-lg-none">
+    <a href="#" class="load-all-items">
+        <div class="carousel-load load-more h5 my-3 text-center p-3  ">
+            Voir les médias
+        </div>
+    </a>
+
+</div>
+<div  id="carousel-area">
+    <div class="carousel-nav row ">
+        <div class="d-flex justify-content-center col-12">
+            <div class="carousel-indicator pt-3">
+                {% for i in 0..(((figure.medias|length)-1)/4)|round(0,'floor') %}
+                    <span id="index-{{ loop.index }}" class="indicator  {% if loop.first %}active{% endif %} "> </span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-between" style="position: relative">
+            <a href="#" class="prev-items" style="position: absolute;left: -50px;top: 2.9vh">
+                <div class="round-left" ><span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </a>
+
+            <a href="#" class="next-items" style="position: absolute;right: -50px;top: 2.9vh">
+                <div class="round-right" ><span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="row p-3 " id="loader-image" style="min-height: 138px">
+        {{ myTricks.mediasRanged(figure) }}
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal-custom">
+    <div class="modal fade p-0" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding: 17px;padding-left: 17px">
+        <div class="modal-dialog my-0" role="document" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+
+                </div>
+                <div class="modal-body" >
+                    <div class="modal-img" style="height: 100%">
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="container-fluid center-div">
+    <div class="row " >
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6 col-sm-12 bg-light p-4">
+            <h1 style="color: #476f9e" class=" mb-5">Se connecter !</h1>
+            {% if error and not noValidate  %}
+
+                <div class="custom-alert alert-danger">Votre email ou mot de passe est invalide </div>
+            {% elseif noValidate  %}
+                <div class="custom-alert alert-notify">Votre Compte n'est pas encore actif veuillez le confirmez depuis l'email de confirmation que vous avez recut</div>
+            {% endif %}
+            <form action="{{ path('account_login') }}" method="post">
+                <div class="form-group mt-4">
+                    <label for="email">Votre email</label>
+                    <input name="_username" id="email" type="text" class="form-control" value="{{ username }}">
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input name="_password" id="password" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                </div>
+            </form>
+            <div class="pt-3">
+                <a href="{{ path('account_registration') }}" >Inscription</a>
+            </div>
+            <div class="pt-3">
+                <a href="{{ path('account_forget') }}" >Mot de passe oublié ? </a>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

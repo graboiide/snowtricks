@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+{% form_theme formGroup 'bootstrap_4_layout.html.twig' %}
+
+
+{% block title %}Edition groupes de figure{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row center-div d-flex justify-content-center" >
+
+            <div class="col-lg-8 col-md-12 p-3" style="background-color: white;color: #476f9e">
+                <h1 class=" mb-5">Gestion des groupes de figure</h1>
+                <h3 class="mb-3"> Liste des groupes</h3>
+                <div class="groups-area mb-5">
+                    {% for group in groups %}
+                        <div class="load-more p-2 my-2 d-flex justify-content-between " id="group-{{ group.id }}"> {{group.name}}
+                            <div class="ml-auto d-flex justify-content-between align-items-center text-right" data-id="{{ group.id }}">
+                                <a href="{{ path('admin_group',{id:group.id}) }}" ><i class="mr-2 fa fa-edit fa-2x  d-block" style="color: #476f9e"></i></a>
+                                {% if not group.asTricks %}
+                                    <a href="#" class="delete"><i class="fa fa-trash-alt fa-2x  d-block" style="color: #476f9e"></i></a>
+                                {% else %}
+                                    <a href="#" class="delete warning-modal" data-toggle="modal" data-target="#alertModal"><i class="fa fa-trash-alt fa-2x  d-block" style="color: #F5871F"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <h3 class="mb-3"> Ajouter un groupe</h3>
+                {{ form_start(formGroup) }}
+                {{ form_row(formGroup.name) }}
+
+                <button type="submit" class="btn btn-primary">{% if modified %}Modifier{% else %} Ajouter {% endif %}</button>
+                {{ form_end(formGroup) }}
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Attention !</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ce groupe est relié à plusieurs figures</p>
+                    <p>En le supprimant les figures associé et leurs contenu respectif seront supprimé.</p>
+                    <p>Veuillez confirmer votre choix</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" type="button" class="btn btn-danger" id="confirm-delete">Confirmer</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        jQuery(function() {
+            $('.delete').on('click',function (e) {
+                const id =$(this).parent().data('id');
+                e.preventDefault();
+
+                if(!$(this).hasClass('warning-modal')) {
+                   deleteGroup(id);
+                }else{
+                    $('#confirm-delete').on('click',function (e) {
+                       e.preventDefault();
+                       deleteGroup(id);
+                    })
+                }
+
+            });
+            function deleteGroup(id) {
+                $.ajax({
+                    url : '/admin/group/remove/' + id,
+                    type : 'GET',
+                    dataType : 'html',
+                    success : function(data){
+                        if(data === 'OK') {
+                            $('#group-'+id).remove();
+                        }
+                        else
+                            console.log(data);
+                    },
+                    error : function(){
+                        console.log('error');
+                    }
+
+                });
+
+            }
+
+
+        });
+    </script>
+
+{% endblock %}
+
+
+

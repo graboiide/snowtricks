@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MediaRepository::class)
@@ -24,6 +25,7 @@ class Media
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("tricks:read")
      */
     private $type;
 
@@ -37,6 +39,7 @@ class Media
      * @ORM\JoinColumn(nullable=false)
      */
     private $figure;
+
 
 
     public function getId(): ?int
@@ -91,5 +94,7 @@ class Media
 
         return $this;
     }
+
+
 
 }

@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form _self %}
+{% import "macros/tricks.html.twig" as myTricks %}
+{% block title %}Liste des figures de snowboard{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row center-div d-flex justify-content-center" >
+
+            <div class="col-lg-8 col-md-12 " style="background-color: white">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-12 text-center p-0">
+                        <div class="load-more ml-auto p-2 d-flex justify-content-between align-items-center text-right" style="position: absolute;top: 15px;right: 15px">
+                            <div style="height: 100%;display: none" class="text-center mx-4 cover-info">Clickez sur l'image à afficher à la une</div>
+                            <a href="#" id="cover-edit"><i class="mr-2 fa fa-edit fa-2x d-block" style="color: #476f9e"></i></a>
+                            <a href="#" id="cover-remove"><i class="fa fa-trash-alt fa-2x d-block" style="color: #476f9e"></i></a>
+                        </div>
+                        <div class="title-tricks col-12 text-center" ><h1 class="h1" style="font-size: 4vw">{{ form.vars.value.name }}</h1></div>
+                        {{ myTricks.cover(figure) }}
+                    </div>
+                </div>
+
+                <div class="row p-3 " id="loader-image" >
+                {{ myTricks.medias(form.vars.value.medias) }}
+                    <div id="add-media" class="col-lg-2 col-md-4 col-sm-6 px-1">
+                        <a  href="" data-toggle="modal" data-target="#exampleModal">
+                            <div  class=" d-flex justify-content-center flex-column align-items-center" style="color: #476f9e;border: 1px solid #476f9e;height: 100%;min-height: 160px">
+                                <div><i class="fa fa-plus fa-4x"></i></div>
+                                <div class="h5 text-center">Ajouter un média</div>
+                            </div>
+
+                        </a>
+                    </div>
+
+
+                </div>
+                <div class="row">
+
+                    <div class=" col-md-12 col-lg-10">
+                        {{ form_row(form.name) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ form_row(form.description) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-sm-8">
+                        {{ form_row(form.family) }}
+                    </div>
+                </div>
+                <div class="d-none">
+                    {{ form_row(form.cover) }}
+                </div>
+
+                <div class="row mb-5">
+                    <div class="col-12 d-flex justify-content-end">
+                        {% if figure.id is not null %}
+                            <input type="submit" id="delete-figure" data-id="{{ figure.id }}" class="btn btn-danger mr-3" value="Supprimer">
+                        {% endif %}
+                        <input type="submit"  class="btn btn-primary" value="Sauvegarder">
+                    </div>
+
+                </div>
+
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <input type="file" class="custom-file-input d-none" id="file">
+                                <div class="upload-file">
+                                    <div class="progress mt-2" style="height: 10px">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+                                    </div>
+                                        <button id="upload" class="btn btn-primary mt-2"><i class="fa fa-upload mr-2"></i><span>Upload</span></button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-primary save" data-dismiss="modal">Sauver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+
+        </div>
+    </div>
+
+
+    {% include 'partial/modals.html.twig' %}
+
+
+    <!-- Modal -->
+
+
+
+{% endblock %}
+
+{% block _tricks_medias_widget %}
+    <div>
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block _tricks_medias_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _tricks_medias_entry_widget %}
+    <div id="{{id}}" class="d-none form_tricks">
+        {{ form_row(form.type) }}
+        {{ form_row(form.url) }}
+        {{ form_row(form.caption) }}
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+
+    <script type="text/javascript" src="/js/edit.js"></script>
+    <script type="text/javascript" src="/js/delete.js"></script>
+    <script>
+
+    </script>
+{% endblock %}
+
+
+

@@ -3,12 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\TricksRepository;
+use App\Src\Service\Slug\Slug;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
+ * @UniqueEntity(fields={"slug"},message="Cette figure existe déja veuillez en créer une autre ou la modifier")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Tricks
 {
@@ -16,47 +22,56 @@ class Tricks
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("tricks:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("tricks:read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("tricks:read")
      */
     private $description;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("tricks:read")
      */
     private $dateAdd;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("tricks:read")
      */
     private $dateModif;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("tricks:read")
      */
     private $cover;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("tricks:read")
      */
     private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=Media::class, mappedBy="figure", orphanRemoval=true)
+     * @Groups("tricks:read")
      */
     private $medias;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Tricks")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("tricks:read")
      */
     private $user;
 
@@ -68,8 +83,49 @@ class Tricks
     /**
      * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $family;
+    private $isAuthor;
+
+    /**
+     * @return mixed
+     */
+    public function getIsAuthor()
+    {
+        return $this->isAuthor;
+    }
+
+    /**
+     * @param mixed $autorizeEdit
+     */
+    public function setIsAuthor($autorizeEdit): void
+    {
+        $this->isAuthor = $autorizeEdit;
+    }
+
+    /**
+     * Slug automatique
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function createSlug()
+    {
+        $slugify = new Slug();
+        $this->slug = $slugify->slugify($this->name);
+    }
+    /**
+     * chnage les dates
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function modifyDate()
+    {
+        if(is_null($this->dateAdd))
+            $this->dateAdd = new DateTime('now');
+        else
+            $this->dateModif = new DateTime('now');
+    }
 
     public function __construct()
     {
@@ -135,7 +191,7 @@ class Tricks
         return $this->cover;
     }
 
-    public function setCover(string $cover): self
+    public function setCover(?string $cover): self
     {
         $this->cover = $cover;
 
@@ -165,6 +221,7 @@ class Tricks
     public function addMedia(Media $media): self
     {
         if (!$this->medias->contains($media)) {
+
             $this->medias[] = $media;
             $media->setFigure($this);
         }
@@ -238,6 +295,41 @@ class Tricks
         $this->family = $family;
 
         return $this;
+    }
+
+    /**
+     * Retourne toutes les images
+     * @return array
+     */
+    public function getImages()
+    {
+        $images = [];
+        /**
+         * @var Media $media
+         */
+        foreach ($this->medias as $media){
+            if($media->getType() === 0)
+                $images[]=$media;
+        }
+        return $images;
+    }
+    /**
+     * Retourne toutes les images
+     * @return array
+     */
+    public function getmovies()
+    {
+        $movies = [];
+        /**
+         * @var Media $media
+         */
+        foreach ($this->medias as $media){
+            if($media->getType() === 1){
+                $movies[]=$media;
+            }
+
+        }
+        return $movies;
     }
 
 }

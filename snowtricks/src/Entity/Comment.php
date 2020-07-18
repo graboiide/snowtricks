@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -18,12 +22,13 @@ class Comment
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $message;
 
@@ -32,6 +37,22 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      */
     private $figure;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * Ajoute la date automatiquement
+     * @ORM\PrePersist()
+     * @throws Exception
+     */
+    public function addDate()
+    {
+        $this->date = new DateTime('now');
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +91,18 @@ class Comment
     public function setFigure(?Tricks $figure): self
     {
         $this->figure = $figure;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

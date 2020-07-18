@@ -6,31 +6,48 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"},message="Ce compte existe déja ")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Ce champ ne peu etre vide")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min = 6,
+     *      max = 50,
+     *      minMessage = "Votre mot de passe doit comporter plus de  {{ limit }} characteres ",
+     *      maxMessage = "Votre mot de passe doit comporter moins de  {{ limit }} characteres ",
+     *      allowEmptyString = false
+     *     )
      */
     private $hash;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Email invalide")
+     *
      */
     private $email;
 
@@ -59,9 +76,34 @@ class User
      */
     private $Tricks;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
+     */
+    private $comments;
+    /**
+     * @Assert\EqualTo(propertyPath="hash",message="Les deux mot de passes doivent etre identique ")
+     */
+    public $passwordConfirm;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="users")
+     */
+    private $userRoles;
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+    public function AsRole($roleName)
+    {
+        return in_array($roleName,$this->getRoles());
+    }
+
     public function __construct()
     {
         $this->Tricks = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +221,111 @@ class User
             if ($trick->getUser() === $this) {
                 $trick->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+        $roles = ['ROLE_USER'];
+        /**
+         * @var Role $role
+         */
+        foreach ($this->userRoles as $role)
+            $roles[] = $role->getTitle();
+        return $roles;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPassword()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+       return $this->email;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getUserRoles(): Collection
+    {
+        return $this->userRoles;
+    }
+
+    public function addUserRole(Role $userRole): self
+    {
+        if (!$this->userRoles->contains($userRole)) {
+            $this->userRoles[] = $userRole;
+            $userRole->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(Role $userRole): self
+    {
+        if ($this->userRoles->contains($userRole)) {
+            $this->userRoles->removeElement($userRole);
+            $userRole->removeUser($this);
         }
 
         return $this;

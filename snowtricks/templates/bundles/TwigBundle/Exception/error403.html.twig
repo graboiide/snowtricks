@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error 403 forbidden{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row center-div d-flex justify-content-center" >
+
+            <div class="col-lg-8 col-md-12 p-3" style="background-color: white">
+                <h1 style="color: #476f9e" class=" mb-5">Error 403</h1>
+               <p>Vous n'avez pas les droits requis pour accéder à cette page </p>
+                <a href="{{ path('home') }}" class="btn btn-primary">Retourner à l'acceuil</a>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,165 @@
+body{
+    font-family: Roboto, serif;
+}
+
+
+.card-title{
+    color: #476f9e;
+    padding: 0;
+}
+.card-img-top{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.card{
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.07);
+    border: 1px solid #f1f1f1;
+    border-radius: 0;
+}
+.card-body h5{
+    font-size: 13px;
+    margin: 0;
+
+}
+.card-body{
+    padding: 10px 5px;
+}
+.img-header{
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    background-image: url("/img/snowtricks2.png");
+    background-position: center;
+    background-size: cover;
+    background-color: #e2e4e5;
+}
+.degrade{
+
+    background: linear-gradient(#e2e4e5,white);
+    height: 20px;
+    width: 100%;
+}
+.reverse-degrade{
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(transparent,#e2e4e5);
+    height: 20px;
+    width: 100%;
+}
+.navbar-brand img{
+    height: 55px;
+}
+.bg-dark{
+    background-color: #476f9e!important;
+}
+
+.carousel-indicator span {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-color: #476f9e;
+    border-radius: 100%;
+}
+.carousel-indicator .active{
+    width: 20px;
+    height: 20px;
+    background-color: #F5871F;
+}
+label{
+    font-family: Roboto, serif;
+    color: #476f9e;
+    font-weight: bold;
+}
+.form-control{
+    border-radius: 0;
+
+    color: #476f9e;
+}
+.btn{
+    border-radius: 0;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+}
+
+
+/* loader */
+.load-more{
+    color: #476f9e;
+    font-size: 15px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.07);
+    border: 1px solid #f1f1f1;
+    background-color: white;
+}
+.comment{
+    border-top-left-radius: 40px;
+    color: #476f9e;
+    font-size: 15px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.07);
+    border: 1px solid #f1f1f1;
+}
+a:hover{
+    text-decoration: none;
+}
+.center-div{
+    margin-top: 60px;
+}
+.title-tricks{
+    position: absolute;
+    top: 50%;
+    left:0;
+}
+.title-tricks h1{
+    color: white;
+    text-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+}
+.descr-tricks{
+    font-family: Roboto, serif;
+    font-size: 20px;
+    border-left: 4px solid #476f9e;
+
+}
+.alert-success{
+    color: #ffffff;
+    padding: 0.75rem;
+    background-color: #62b166;
+    border-bottom: 5px solid #4d7b4f;
+}
+.alert-danger{
+    color: #ffffff;
+    padding: 0.75rem;
+    background-color: #d24441;
+    border-bottom: 5px solid #821315;
+}
+.alert-notify{
+    color: #ffffff;
+    padding: 0.75rem;
+    background-color: #476f9e;
+    border-bottom: 5px solid #384570;
+}
+.alert{
+    position: fixed;
+    z-index: 999;
+    top: 81px;
+    width: 100%;
+    border-radius: 0;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+
+}
+footer{
+    height: 150px;
+    border-top: 1px solid rgba(221, 221, 221, 0.33);
+}
+footer div:first-child{
+    color: #476f9e;
+    font-size: 15px;
+}
+@media only screen and (max-device-width: 768px) {
+    .img-header{
+        background-image: url("/img/snowtricks_mobile.png");
+    }
+    .navbar{
+        background-color: #476f9e;
+    }
+
+}

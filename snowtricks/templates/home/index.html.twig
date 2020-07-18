@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des figures de snowboard{% endblock %}
+
+{% block body %}
+
+    <div class="container-lg mt-5" id="tricks">
+        {% if app.user %}
+            <a href="{{ path('admin_add') }}" class="btn btn-secondary">Ajouter une figure</a>
+        {% endif %}
+        <div class="row tricks-area">
+            {% include 'home/tricks.html.twig' with {'tricks' : tricks}%}
+
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <div class="col-lg-5 col-md-12">
+
+                    <a href="#" id="load-tricks">
+                        <div class="load-more h5 my-5 text-center p-3 d-flex justify-content-center align-items-center">
+                            <div><img src="/img/loader.gif" alt="" style="width: 30px"></div>
+                            <div class="message-load">Charger les figures suivantes (<span id="nbTricks">{{ nbTricks-nbLoad }}</span> restantes)</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="to-tricks-top">
+            <a href="#tricks" class="smooth-scroll">
+                <div class="round-top">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    {% include 'partial/modals.html.twig' %}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/js/index.js"></script>
+    <script>
+        jQuery(function(){
+            $(".img-header").css('position','initial');
+            let loader = $(".load-more img");
+            loader.hide();
+            let page = 1;
+            let nbTricks = {{ nbTricks }}-{{ nbLoad }};
+            if(nbTricks < 1)
+                $("#load-tricks").hide();
+            let nbLoad = {{ nbLoad }};
+            $("#load-tricks").click(function(e){
+                loader.show();
+                $('.message-load').hide();
+
+                e.preventDefault();
+                $.ajax({
+                    url : '/load/'+page,
+                    type : 'GET',
+                    dataType : 'html',
+                    success : function(data, statut){
+
+                        console.log(nbTricks);
+                        page++;
+                        if(nbTricks > 0){
+                            $('.tricks-area').append(data);
+                            nbTricks -= nbLoad;
+                            $('#nbTricks').text(nbTricks);
+                        }
+                        if(nbTricks <= 0){
+                            $('#load-tricks').hide();
+                        }
+                        loader.hide();
+                        $('.message-load').show();
+
+
+                    },
+
+                    error : function(resultat, statut, erreur){
+                        console.log('error');
+                    }
+
+                });
+
+            });
+        });
+    </script>
+{% endblock %}
+
+

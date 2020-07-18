@@ -5,6 +5,9 @@
 {% block body %}
 
     <div class="container-lg mt-5" id="tricks">
+        {% if app.user %}
+            <a href="{{ path('admin_add') }}" class="btn btn-secondary">Ajouter une figure</a>
+        {% endif %}
         <div class="row tricks-area">
             {% include 'home/tricks.html.twig' with {'tricks' : tricks}%}
 
@@ -12,6 +15,7 @@
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <div class="col-lg-5 col-md-12">
+
                     <a href="#" id="load-tricks">
                         <div class="load-more h5 my-5 text-center p-3 d-flex justify-content-center align-items-center">
                             <div><img src="/img/loader.gif" alt="" style="width: 30px"></div>

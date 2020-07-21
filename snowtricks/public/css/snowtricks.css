@@ -154,6 +154,7 @@ footer div:first-child{
     color: #476f9e;
     font-size: 15px;
 }
+
 @media only screen and (max-device-width: 768px) {
     .img-header{
         background-image: url("/img/snowtricks_mobile.png");
@@ -161,5 +162,6 @@ footer div:first-child{
     .navbar{
         background-color: #476f9e;
     }
+
 
 }

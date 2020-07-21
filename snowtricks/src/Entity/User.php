@@ -12,12 +12,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"},message="Ce compte existe déja ")
  */
 class User implements UserInterface
 {
+
+    public function __construct()
+    {
+        $this->Tricks = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
+    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -29,18 +37,15 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Ce champ ne peu etre vide")
+     * @Assert\Regex(pattern="/^[a-zA-Z0-9_]{3,16}$/",message="Votre pseudo utilise des caracteres invalides")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *     min = 6,
-     *      max = 50,
-     *      minMessage = "Votre mot de passe doit comporter plus de  {{ limit }} characteres ",
-     *      maxMessage = "Votre mot de passe doit comporter moins de  {{ limit }} characteres ",
-     *      allowEmptyString = false
-     *     )
+     * @Assert\NotBlank(message="Veuillez indiquez un password")
+     * @Assert\Regex(pattern="/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/",
+     *     message="Votre mode passe doit contenir au moins une majuscule,une minisucule,un caractere spéciale (-+!*$@%_),un chiffe et faire entre 8 et 12 caractere")
      */
     private $hash;
 
@@ -92,19 +97,14 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return $this->name;
+        return (string)$this->name;
     }
     public function AsRole($roleName)
     {
         return in_array($roleName,$this->getRoles());
     }
 
-    public function __construct()
-    {
-        $this->Tricks = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-        $this->userRoles = new ArrayCollection();
-    }
+
 
     public function getId(): ?int
     {

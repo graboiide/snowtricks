@@ -1,7 +1,7 @@
 
 <div class="col-lg-2 col-md-4 col-sm-6 px-1 my-carousel-item" data-id="{{ id ?? '__id__' }}" id="tricks_medias_{{ id ?? '__id__' }}_view">
     {% if media.type is same as (0) %}
-        <img class="card-img-top my-1 removable" src="{{ media.url ?? '__url__' }}" alt="{{ media.caption ?? '__caption__' }}">
+        <img class="img-fluid my-1 removable" src="{{ media.url ?? '__url__' }}" alt="{{ media.caption ?? '__caption__' }}">
     {% else %}
         <div class="my-1 embed-responsive embed-responsive-16by9 removable">
             <iframe class="embed-responsive-item" src="{{ media.url ?? '__url__' }}" allowfullscreen></iframe>

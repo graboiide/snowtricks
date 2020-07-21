@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Group;
 use App\Repository\CommentRepository;
 use App\Repository\GroupRepository;
 use App\Repository\TricksRepository;
@@ -22,13 +23,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class AjaxController extends AbstractController
+class AjaxController extends BackController
 {
 
     /**
      * @Route("/addComment",name="add_comment")
      * @param EntityManagerInterface $entityManager
      * @return Response
+     * @IsGranted("ROLE_USER")
      */
     public function addComment(EntityManagerInterface $entityManager,Request $request,TricksRepository $tricksRepository)
     {
@@ -55,6 +57,7 @@ class AjaxController extends AbstractController
     public function removeComment($id,EntityManagerInterface $entityManager,Request $request,CommentRepository $commentRepository)
     {
         $comment = $commentRepository->findOneBy(['id'=>$id]);
+
         if($this->isUserOrAdmin($comment->getUser())){
             $entityManager->remove($comment);
             $entityManager->flush();
@@ -81,10 +84,10 @@ class AjaxController extends AbstractController
             $comment->setMessage($request->request->get('message'));
             $entityManager->persist($comment);
             $entityManager->flush();
-            return new Response('OK');
+            return new Response($request->request->get('message'));
         }
 
-        return new Response('Error');
+        return new Response('Error identification');
     }
 
     /**
@@ -92,7 +95,7 @@ class AjaxController extends AbstractController
      * @param $type
      * @return Response
      */
-    public function loadTricks($type):Response
+    public function loadTemplateTricks($type):Response
     {
 
         return $this->render('home/media-tmpl.html.twig',['media'=>['type'=>(int)$type],'edit'=>true]);
@@ -107,7 +110,6 @@ class AjaxController extends AbstractController
      */
     public function upload(Request $request,EntityManagerInterface $manager,FileUploader $fileUploader)
     {
-
         if(isset($request->files)) {
             $tabExt = array('jpg', 'gif', 'png', 'jpeg');
             $uniqID = uniqid();
@@ -121,10 +123,23 @@ class AjaxController extends AbstractController
             }
 
         }
-
         $response = new Response(json_encode($nameModify));
         $response->headers->set('Content-Type','application/json');
         return $response;
+    }
+    /**
+     * @Route("/load/{page}", name="load_tricks")
+     *
+     * @param $page
+     * @param TricksRepository $repo
+     * @return Response
+     */
+    public function loadTricks($page,TricksRepository $repo,Request $request):Response
+    {
+        $tricks = $this->findEditableTricks($repo->findBy([],['id'=>'DESC'],12,$page * 12));
+        return $this->render('home/tricks.html.twig', [
+            'tricks' => $tricks
+        ]);
     }
 
     /**
@@ -146,10 +161,8 @@ class AjaxController extends AbstractController
 
 
     private function isUserOrAdmin($userToCompare){
-        if($userToCompare === $this->getUser() or in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
-            return true;
-        }
-        return false;
+       return $userToCompare === $this->getUser() || in_array('ROLE_ADMIN',$this->getUser()->getRoles());
+
     }
 
 }

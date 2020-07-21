@@ -199,7 +199,7 @@
 /* To Tricks */
 .to-tricks{
     position: absolute;
-    bottom: 60px;
+    bottom: 80px;
     right: 60px;
 }
 
@@ -270,6 +270,6 @@
 }
 .to-tricks-top{
     position: fixed;
-    bottom: 60px;
+    bottom: 80px;
     right: 60px;
 }

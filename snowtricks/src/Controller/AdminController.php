@@ -20,27 +20,28 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdminController extends BackController
 {
 
 
     /**
-     * @Route("/admin/edit/{id}", name="admin_edit")
+     * @Route("/admin/edit/{slug}", name="admin_edit")
      * @Route("/admin/add", name="admin_add")
      * @IsGranted("ROLE_USER")
-     * @param $id
+     * @param $slug
      * @param TricksRepository $tricksRepository
      * @param EntityManagerInterface $manager
      * @param Request $request
      * @return Response
      * @throws Exception
      */
-    public function edit($id = null,TricksRepository $tricksRepository,EntityManagerInterface $manager,Request $request)
+    public function edit($slug = null,TricksRepository $tricksRepository,EntityManagerInterface $manager,Request $request)
     {
 
-        if(!is_null($id)){
-            $figure = $tricksRepository->findOneBy(['id'=>$id]);
+        if(!is_null($slug)){
+            $figure = $tricksRepository->findOneBy(['slug'=>$slug]);
         }
         else{
             $figure = new Tricks();
@@ -50,9 +51,8 @@ class AdminController extends BackController
         $form = $this->createForm(TricksType::class,$figure);
         $form->handleRequest($request);
 
-        //si pas autorisé redirect
-        if(!$this->isAuthorGranted($figure))
-            return $this->redirectToRoute('home');
+        //si pas autorisé redirect en retourne un 403
+        $this->userIsAuthorizeToAccess($figure->getUser());
 
         if($form->isSubmitted() && $form->isValid()){
             foreach ($figure->getMedias() as $media) {
@@ -96,8 +96,8 @@ class AdminController extends BackController
     {
 
         $figure = $tricksRepository->findOneBy(['id'=>$id]);
-        if(!$this->isAuthorGranted($figure))
-            $this->redirectToRoute('home');
+        $this->userIsAuthorizeToAccess($figure->getUser());
+
         $entityManager->remove($figure);
         $entityManager->flush();
         if(!$redirect)

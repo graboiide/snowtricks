@@ -24,40 +24,7 @@
 
                 <div class="row">
                     <div class="img-header">
-                        <nav class="navbar navbar-expand-sm navbar-dark fixed-top my-nav" >
-                            <!-- Brand -->
-                            <a class="navbar-brand" href="#"><img src="/img/logo.png" alt=""></a>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-
-
-                            <!-- Links -->
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ml-auto">
-
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('home') }}">Les tricks</a>
-                                </li>
-
-                                {% if app.user and app.user.asRole('ROLE_ADMIN') %}
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ path('admin_config') }}">Administration</a>
-                                    </li>
-                                {% endif %}
-                                <li class="nav-item">
-                                    {% if app.user is null  %}
-                                        <a class="nav-link" href="{{ path('account_login') }}">Se connecter</a>
-                                    {% else %}
-                                        <a class="nav-link" href="{{ path('account_logout') }}">Se deconnecter</a>
-                                    {% endif %}
-                                </li>
-
-                                <!-- Dropdown -->
-
-                            </ul>
-                            </div>
-                        </nav>
+                    {% include 'partial/navbars.html.twig'  %}
 
                         <div class="to-tricks">
                             <a href="#tricks" class="smooth-scroll">
@@ -83,7 +50,7 @@
 <div class="container">
     <footer>
         <div class="row">
-            <div class="col-6 mt-5 p-2">Copyright © projet openclassroom Snowtricks</div>
+            <div class="col-lg-6 col-md-12 mt-5 p-2">Copyright © projet openclassroom Snowtricks</div>
             <div class=" col-3 text-center ">
                 <div class="col-3"></div>
             </div>
@@ -92,34 +59,9 @@
 </div>
 
     <script type="text/javascript" src="/js/flash.js"></script>
+    <script type="text/javascript" src="/js/nav.js"></script>
     <script>
-        $(".to-tricks-top").hide();
 
-        $(window).scroll(function() {
-
-            var scroll = $(window).scrollTop();
-
-            if (scroll >= 90) {
-                $(".my-nav").addClass("bg-dark");
-                $(".to-tricks").fadeOut();
-            } else {
-                $(".my-nav").removeClass("bg-dark");
-                $(".to-tricks").fadeIn();
-            }
-            if(scroll >= 1080){
-                $(".to-tricks-top").fadeIn();
-            } else {
-                $(".to-tricks-top").fadeOut();
-            }
-        });
-        $(document).ready(function() {
-            $('.smooth-scroll').on('click', function() { // Au clic sur un élément
-                var page = $(this).attr('href'); // Page cible
-                var speed = 400; // Durée de l'animation (en ms)
-                $('html, body').animate( { scrollTop: $(page).offset().top }, speed ); // Go
-                return false;
-            });
-        });
     </script>
         {% block javascripts %}
 

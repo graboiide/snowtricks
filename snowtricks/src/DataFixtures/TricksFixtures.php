@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Comment;
+use App\Entity\Config;
 use App\Entity\Group;
 use App\Entity\Media;
 use App\Entity\Role;
@@ -23,6 +24,13 @@ class TricksFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        //config
+        $config = new Config();
+        $config->setEmailAdmin('gregcodeur@gmail.fr')
+            ->setNbMessagesDisplay(10)
+            ->setNbTricksDisplay(12)
+            ->setProtectLevel(1);
+        $manager->persist($config);
         // groupe de figures
         $groups=['grabs','rotation','flips','slides','one foot tricks','old school'];
         $entityGroups = [];
@@ -34,7 +42,7 @@ class TricksFixtures extends Fixture
             $manager->persist($entityGroup);
         }
         $faker = Factory::create('fr_FR');
-        //users
+        //users admin
         $adminRole = new Role();
         $adminRole->setTitle('ROLE_ADMIN');
         $manager->persist($adminRole);
@@ -62,7 +70,15 @@ class TricksFixtures extends Fixture
                 ->setEmail($faker->email)
                 ->setHash($this->encoder->encodePassword($user,'123456'))
                 ->setToken(uniqid());
+            //user test
+            if($i === 0){
+                $user->setName('user_test');
+                $user->setEmail('test@test.fr');
+            }
+
             $manager->persist($user);
+
+
             $users[] = $user;
         }
         //tricks
@@ -78,6 +94,8 @@ class TricksFixtures extends Fixture
                 ->setSlug($faker->slug)
                 ->setFamily($entityGroups[mt_rand(0,5)])
                 ->setUser($users[mt_rand(0,9)]);
+            if($i === 0)
+                $figure->setName('figure_test');
             $manager->persist($figure);
             //comments
             for ($j =0 ; $j < mt_rand(0,20) ; $j++){

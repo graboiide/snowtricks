@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-sm navbar-dark fixed-top my-nav" id="nav-screen-lg">
+
+        <a class="navbar-brand" href="#"><img src="/img/logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('home') }}">Les tricks</a>
+                </li>
+
+                {% if app.user and app.user.asRole('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin_config') }}">Administration</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    {% if app.user is null  %}
+                        <a class="nav-link" href="{{ path('account_login') }}">Se connecter</a>
+                    {% else %}
+                        <a class="nav-link" href="{{ path('account_logout') }}">Se deconnecter</a>
+                    {% endif %}
+                </li>
+
+            </ul>
+        </div>
+
+
+</nav>
+
+<nav class="navbar navbar-expand-sm navbar-dark fixed-top my-nav" id="nav-screen-sm">
+    <div class="col-12">
+        <div class="d-flex justify-content-between">
+
+            <a class="d-block text-white" href="{{ path('home') }}"><i class="fas fa-home fa-3x"></i></a>
+
+            <a class="d-block text-white" href="{{ path('admin_add') }}"><i class="fas fa-plus fa-3x"></i></a>
+            {% if app.user %}
+                <a class="d-block text-white" href="{{ path('account_logout') }}"><i class="fas fa-sign-out-alt fa-3x"></i></a>
+            {% else %}
+                <a class="d-block text-white" href="{{ path('account_login') }}"><i class="fas fa-sign-in-alt fa-3x"></i></a>
+            {% endif %}
+
+
+
+
+        </div>
+    </div>
+
+
+</nav>

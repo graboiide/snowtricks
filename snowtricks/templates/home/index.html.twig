@@ -8,6 +8,7 @@
         {% if app.user %}
             <a href="{{ path('admin_add') }}" class="btn btn-secondary">Ajouter une figure</a>
         {% endif %}
+
         <div class="row tricks-area">
             {% include 'home/tricks.html.twig' with {'tricks' : tricks}%}
 
@@ -58,15 +59,14 @@
             $("#load-tricks").click(function(e){
                 loader.show();
                 $('.message-load').hide();
-
+                let data = new FormData();
                 e.preventDefault();
                 $.ajax({
-                    url : '/load/'+page,
+                    url : '/load/'+page+'/',
                     type : 'GET',
                     dataType : 'html',
                     success : function(data, statut){
 
-                        console.log(nbTricks);
                         page++;
                         if(nbTricks > 0){
                             $('.tricks-area').append(data);
@@ -78,8 +78,6 @@
                         }
                         loader.hide();
                         $('.message-load').show();
-
-
                     },
 
                     error : function(resultat, statut, erreur){
@@ -88,6 +86,21 @@
 
                 });
 
+            });
+            //affichage des bouton vers bas et haut de page
+            $('.to-tricks').show();
+            $(window).scroll(function() {
+                let scroll = $(window).scrollTop();
+                if (scroll >= 90) {
+                    $(".to-tricks").fadeOut();
+                } else {
+                    $(".to-tricks").fadeIn();
+                }
+                if(scroll >= 1080){
+                    $(".to-tricks-top").fadeIn();
+                } else {
+                    $(".to-tricks-top").fadeOut();
+                }
             });
         });
     </script>

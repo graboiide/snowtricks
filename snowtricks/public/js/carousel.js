@@ -19,7 +19,7 @@ jQuery(function() {
     });
     $('.modal-img').click(function () {
         $('#exampleModal').modal('hide');
-        console.log('click');
+
     });
     function breackpoint() {
         if( w < 975 ){

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Group;
 use App\Entity\Tricks;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
@@ -32,7 +33,8 @@ class HomeController extends BackController
     public function index(TricksRepository $repo):Response
     {
         $nbTricksDisplay = $this->config->getNbTricksDisplay();
-        $tricks = $this->checkPermEditTricks($repo->findBy([],['id'=>'DESC'],$nbTricksDisplay,0));
+        $tricks = $this->findEditableTricks($repo->findBy([],['id'=>'DESC'],$nbTricksDisplay,0));
+
 
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
@@ -41,40 +43,24 @@ class HomeController extends BackController
         ]);
     }
 
-    /**
-     * @Route("/load/{page}", name="load_tricks")
-     * @param $page
-     * @param TricksRepository $repo
-     * @return Response
-     */
-    public function loadTricks($page,TricksRepository $repo):Response
-    {
-        $tricks = $this->checkPermEditTricks($repo->findBy([],['id'=>'DESC'],12,$page * 12));
-        return $this->render('home/tricks.html.twig', [
-            'tricks' => $tricks
-        ]);
-    }
+
 
     /**
      * @Route("/tricks/{slug}",name="show_tricks")
      * @param $slug
-     * @param TricksRepository $repo
+     * @param Tricks $figure
      * @param CommentRepository $repoComment
-     * @param Request $request
      * @return Response
      */
-    public function show($slug, TricksRepository $repo, CommentRepository $repoComment):Response
+    public function show($slug, Tricks $figure, CommentRepository $repoComment):Response
     {
-        $figure = $repo->findOneBy(['slug'=>$slug]);
-        $figure = $this->checkPermEditTricks([$figure])[0];
         $comment = new Comment();
         $formComment = $this->createForm(CommentType::class,$comment);
-
-        $figureId = $figure->getId();
+        $figure = $this->checkFigureIsEditable($figure);
         return $this->render('home/show.html.twig', [
             'figure'=>$figure,
             'comments'=>$repoComment->findBy(
-                ['figure'=>$figureId],
+                ['figure'=>$figure->getId()],
                 ['id'=>'DESC'],$this->config->getNbMessagesDisplay(),0),
             'nbLoad'=>$this->config->getNbMessagesDisplay(),
             'nbComments'=>$repoComment->count(['figure'=>$figure->getId()]),
@@ -98,21 +84,10 @@ class HomeController extends BackController
         ]);
     }
     /**
-     * Retourne les figures avec l'autorisation d'édition
+     * Marque les figures editable pour l'utilisateur
      * @param $tricks
      * @return mixed
      */
-    protected function checkPermEditTricks($tricks)
-    {
-        /**
-         * @var Tricks $figure
-         */
-        foreach ($tricks as $figure){
-            $figure->setIsAuthor(false);
-            if ($this->getUser() && $this->isAuthorGranted($figure) )
-                $figure->setIsAuthor(true);
-        }
-        return $tricks;
-    }
+
 
 }

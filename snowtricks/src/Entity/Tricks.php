@@ -3,21 +3,31 @@
 namespace App\Entity;
 
 use App\Repository\TricksRepository;
-use App\Src\Service\Slug\Slug;
+
+
+use App\Service\Slug;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
- * @UniqueEntity(fields={"slug"},message="Cette figure existe déja veuillez en créer une autre ou la modifier")
+ * @UniqueEntity(fields={"name"},message="Cette figure existe déja veuillez en créer une autre ou la modifier")
  * @ORM\HasLifecycleCallbacks()
  */
 class Tricks
 {
+
+    public function __construct()
+    {
+        $this->medias = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -29,12 +39,26 @@ class Tricks
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("tricks:read")
+     * @Assert\Length(
+     *     min = 3,
+     *      max = 50,
+     *      minMessage = "Le nom de la figure doit comporter au minimum {{ limit }} characteres",
+     *      maxMessage = "Le nom de la figure doit comporter au maximum {{ limit }} characteres",
+     *      allowEmptyString = false
+     *     )
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
      * @Groups("tricks:read")
+     * @Assert\Length(
+     *     min = 3,
+     *      max = 1000,
+     *      minMessage = "La description de la figure doit comporter au minimum {{ limit }} characteres",
+     *      maxMessage = "La description de la figure doit comporter au maximum {{ limit }} characteres",
+     *      allowEmptyString = false
+     *     )
      */
     private $description;
 
@@ -86,22 +110,25 @@ class Tricks
      *
      */
     private $family;
-    private $isAuthor;
+    private $isEditable;
+
+
 
     /**
      * @return mixed
      */
-    public function getIsAuthor()
+    public function getIsEditable()
     {
-        return $this->isAuthor;
+        return $this->isEditable;
     }
 
     /**
-     * @param mixed $autorizeEdit
+     * @param bool $isAuthorOrAdmin
+     * @return void
      */
-    public function setIsAuthor($autorizeEdit): void
+    public function setIsEditable($isAuthorOrAdmin = false):void
     {
-        $this->isAuthor = $autorizeEdit;
+        $this->isEditable = $isAuthorOrAdmin;
     }
 
     /**
@@ -127,11 +154,7 @@ class Tricks
             $this->dateModif = new DateTime('now');
     }
 
-    public function __construct()
-    {
-        $this->medias = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
+
 
     public function getId(): ?int
     {

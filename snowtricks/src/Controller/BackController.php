@@ -5,8 +5,11 @@ namespace App\Controller;
 
 
 use App\Entity\Tricks;
+use App\Entity\User;
 use App\Repository\ConfigRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 class BackController extends AbstractController
@@ -15,7 +18,8 @@ class BackController extends AbstractController
     public function __construct(ConfigRepository $configRepository,Environment $twig)
     {
         $this->config = $configRepository->findBy([],['id'=>'desc'])[0];
-        $twig->addGlobal('lvlProtection',$this->config->getProtectLevel());
+        $twig->addGlobal('Config',$this->config);
+
     }
 
     /**
@@ -23,12 +27,34 @@ class BackController extends AbstractController
      * @param Tricks $figure
      * @return bool
      */
-    protected function isAuthorGranted(Tricks $figure)
+    protected function isUserGranted(User $user)
     {
-        if ((($this->config->getProtectLevel() === 0 || $this->getUser()->asRole('ROLE_ADMIN')) ||
-            ($this->config->getProtectLevel() === 1 && $figure->getUser() === $this->getUser())))
-            return true;
-        return false;
+       return (($this->config->getProtectLevel() === 0 || $this->getUser()->AsRole('ROLE_ADMIN')) ||
+            ($this->config->getProtectLevel() === 1 && $user === $this->getUser()));
+    }
+
+    protected function userIsAuthorizeToAccess(User $user)
+    {
+
+        if(!$this->isUserGranted($user))
+            throw new AccessDeniedException('Accées refusé');
+
+    }
+
+    protected function findEditableTricks($tricks)
+    {
+
+        /** * @var Tricks $figure */
+        foreach ($tricks as $figure)
+            $figure->setIsEditable($this->getUser() && $this->isUserGranted($figure->getUser()));
+
+        return  $tricks;
+    }
+    protected function checkFigureIsEditable(Tricks $figure)
+    {
+        $figure->setIsEditable($this->getUser() && $this->isUserGranted($figure->getUser()));
+
+        return  $figure;
     }
 
 

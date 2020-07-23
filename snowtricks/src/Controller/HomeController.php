@@ -36,6 +36,7 @@ class HomeController extends BackController
         $tricks = $this->findEditableTricks($repo->findBy([],['id'=>'DESC'],$nbTricksDisplay,0));
 
 
+
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
             'nbTricks' => $repo->count([]),
@@ -57,6 +58,7 @@ class HomeController extends BackController
         $comment = new Comment();
         $formComment = $this->createForm(CommentType::class,$comment);
         $figure = $this->checkFigureIsEditable($figure);
+
         return $this->render('home/show.html.twig', [
             'figure'=>$figure,
             'comments'=>$repoComment->findBy(

@@ -136,7 +136,7 @@ class AjaxController extends BackController
      */
     public function loadTricks($page,TricksRepository $repo,Request $request):Response
     {
-        $tricks = $this->findEditableTricks($repo->findBy([],['id'=>'DESC'],12,$page * 12));
+        $tricks = $this->findEditableTricks($repo->findBy([],['id'=>'DESC'],$this->config->getNbTricksDisplay(),$page * $this->config->getNbTricksDisplay()));
         return $this->render('home/tricks.html.twig', [
             'tricks' => $tricks
         ]);

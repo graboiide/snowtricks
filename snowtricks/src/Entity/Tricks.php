@@ -180,7 +180,7 @@ class Tricks
 
     public function setDescription(string $description): self
     {
-        $this->description = $description;
+        $this->description =$description;
 
         return $this;
     }

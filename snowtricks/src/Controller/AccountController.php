@@ -81,7 +81,7 @@ class AccountController extends AbstractController
             'Content-type: text/html; charset=iso-8859-1' . "\r\n" ;
 
         $message =
-            'Merci pour votre inscription clickez sur ce lien pour confirmez votre inscription 
+            'Merci pour votre inscription cliquez sur ce lien pour confirmer votre inscription 
             <a href="https://www.oc-p6.gregcodeur.fr/confirm/'.$token.'/'.$id.'"> >> Activer mon compte ! << </a>';
         mail($email,'Confirmez votre compte snowtricks !',$message,$headers);
 
@@ -94,8 +94,8 @@ class AccountController extends AbstractController
             'Content-type: text/html; charset=iso-8859-1' . "\r\n" ;
 
         $message =
-            'Alors petite tête on à oublié son mot de passe ? <br> ne t\'en fais pas et suis les instructions en clickant sur ce lien 
-            <a href="https://www.oc-p6.gregcodeur.fr/forget/'.$token.'/'.$id.'"> >> Changer mon mot de passe << </a> rejoin-nous vite !';
+            'Vous avez demandé de changer votre mot de passe, cliquez sur le lien 
+            <a href="https://www.oc-p6.gregcodeur.fr/forget/'.$token.'/'.$id.'"> >> Changer mon mot de passe << </a> afin de le modifier !';
         mail($email,'Snowtricks : Mot de passe oublié ',$message,$headers);
 
     }

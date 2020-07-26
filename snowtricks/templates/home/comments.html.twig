@@ -11,7 +11,7 @@
                 </span>
 
             </div>
-            <div class="comment-txt-{{ comment.id }}">{{ comment.message }}</div>
+            <div class="comment-txt-{{ comment.id }}">{{ comment.message|nl2br }}</div>
             <div class="edit-{{ comment.id }}"></div>
             {% if app.user and (app.user is same as (comment.user) or app.user.asRole('ROLE_ADMIN') ) %}
             <div class="ml-auto p-2 d-flex justify-content-end align-items-center text-right">
@@ -24,12 +24,13 @@
         </div>
     </div>
 
-    <div id="textarea-edit" class="d-none">
-        <div class="form-group">
-            <label class="form-control d-none" for="edit-comment-textarea">Modifier votre texte</label>
-            <textarea name="edit" id="edit-comment-textarea" rows="10" style="width: 100%;border: 1px solid #476f9e;color: #476f9e"></textarea>
-            <a href="#" class="valid-edit" style="color: #476f9e">Modifier</a> - <a href="#" class="abort" style="color: #476f9e">Annuler</a>
-        </div>
 
-    </div>
 {% endfor %}
+<div id="textarea-edit" class="d-none">
+    <div class="form-group">
+        <label class="form-control d-none" for="edit-comment-textarea">Modifier votre texte</label>
+        <textarea name="edit" id="edit-comment-textarea" rows="10" style="width: 100%;border: 1px solid #476f9e;color: #476f9e"></textarea>
+        <a href="#" class="valid-edit" style="color: #476f9e">Modifier</a> - <a href="#" class="abort" style="color: #476f9e">Annuler</a>
+    </div>
+
+</div>

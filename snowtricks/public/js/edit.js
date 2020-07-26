@@ -54,8 +54,6 @@ jQuery(function() {
     $('#add-media').on('click',function (e) {
         e.preventDefault();
         addMedia = true;
-
-
         // ajout du formualire sdans la collection
         const formTricks = $('#tricks_medias');
         const template= formTricks.data('prototype').replace(/__name__/g,index);
@@ -145,7 +143,8 @@ jQuery(function() {
         let type = $(idTarget+'_type').val();
         let view = $(idTarget+'_view');
         let src = $(idTarget+'_url').val();
-
+        $('.upload-file').hide();
+        $('.upload-file').appendTo($('#loader-image'));
 
         if(addMedia){
                         //appel le prototype d'un media

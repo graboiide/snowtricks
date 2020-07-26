@@ -45,17 +45,17 @@ jQuery(function() {
         });
 
     });
-    let comment;
+    let comment = null;
 
     let id;
     const blockTextarea = $("#textarea-edit");
     let textarea = $("#edit-comment-textarea");
     $('#comments-area').on('click','#edit_comment',function (e) {
         e.preventDefault();
+        if(comment !== null)
+            comment.show();
         comment = $('.comment-txt-'+$(this).data("id"));
-
         id =  $(this).data("id");
-
         comment.hide();
         textarea.val(comment.text());
         console.log('valuer comment text'+ comment.text());

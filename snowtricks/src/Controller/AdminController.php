@@ -39,11 +39,9 @@ class AdminController extends BackController
      */
     public function edit($slug = null,TricksRepository $tricksRepository,EntityManagerInterface $manager,Request $request)
     {
-
         if(!is_null($slug)){
             $figure = $tricksRepository->findOneBy(['slug'=>$slug]);
-        }
-        else{
+        } else{
             $figure = new Tricks();
             $figure->setUser($this->getUser());
         }
@@ -78,9 +76,9 @@ class AdminController extends BackController
     private function flashMessage(Tricks $figure)
     {
         if(is_null($figure->getId()))
-            $this->addFlash('success','Votre figure à bien été ajouté');
+            $this->addFlash('success','Figure ajoutée');
         else
-            $this->addFlash('success','Votre figure à bien été modifié');
+            $this->addFlash('success','Figure modifiée');
     }
 
     /**

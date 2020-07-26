@@ -80,7 +80,11 @@ class HomeController extends BackController
      */
     public function loadComments($page,$figureId,CommentRepository $commentRepository):Response
     {
-        $comments = $commentRepository->findBy(['figure'=>$figureId],['id'=>'DESC'],2,$page * 2);
+        $comments = $commentRepository->findBy(
+            ['figure'=>$figureId],['id'=>'DESC'],
+            $this->config->getNbMessagesDisplay(),
+            $page * $this->config->getNbMessagesDisplay()
+        );
         return $this->render('home/comments.html.twig', [
             'comments'=>$comments
         ]);

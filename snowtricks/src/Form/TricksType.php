@@ -21,7 +21,7 @@ class TricksType extends AbstractType
             ->add('name',TextType::class,['label'=>'Nom de la figure'])
             ->add('description',TextareaType::class,['label'=>'Description de la figure','attr'=>['rows'=>7]])
             ->add('cover')
-            ->add('family',null,['label'=>'Nom de la figure'])
+            ->add('family',null,['label'=>'Groupe de la figure'])
             ->add('medias',CollectionType::class,[
                 'allow_add'=>true,
                 'entry_type'=>MediaType::class,

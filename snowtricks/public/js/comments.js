@@ -3,7 +3,7 @@ jQuery(function() {
     $('#send-comment').on('click',function (e) {
 
         e.preventDefault();
-        if($("#comment_message").val() === '')
+        if($("#comment_message").val().trim().length < 1)
             return;
         let mydata = new FormData();
         //on ajopute le primer fichier de la liste

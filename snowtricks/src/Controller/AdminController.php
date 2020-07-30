@@ -101,7 +101,7 @@ class AdminController extends BackController
         if(!$redirect)
             return new Response('OK');
 
-        $this->addFlash('success','La figure '.$figure->getName().' à bien été supprimé');
+        $this->addFlash('success','La figure '.$figure->getName().' est supprimée');
         return $this->redirectToRoute('home');
     }
 

@@ -1,7 +1,10 @@
 jQuery(function() {
 
     $('#send-comment').on('click',function (e) {
+
         e.preventDefault();
+        if($("#comment_message").val() === '')
+            return;
         let mydata = new FormData();
         //on ajopute le primer fichier de la liste
         mydata.append('idFigure', $(this).data("id"));
@@ -16,6 +19,7 @@ jQuery(function() {
             type: 'post',
             success: function (data) {
                 $('#comments-area').prepend(data);
+                $("#comment_message").val('')
             },
             error: function() {
                 console.log('erreur');

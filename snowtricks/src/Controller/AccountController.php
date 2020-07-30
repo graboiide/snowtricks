@@ -137,7 +137,7 @@ class AccountController extends AbstractController
      */
     public function forgetPassword(Request $request,UserRepository $userRepository,TokenGeneratorInterface $tokenGenerator,EntityManagerInterface $entityManager)
     {
-        dump($request->request->get('email'));
+
         $message = null;
         if($request->getMethod() === 'POST'){
            $user = $userRepository->findOneBy(['email'=>$request->request->get('email')]);
